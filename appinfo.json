@@ -1,0 +1,18 @@
+{
+  "uuid": "9188b5c1-bb16-45d5-97db-39bb3c0a3e12",
+  "shortName": "IceWatch",
+  "longName": "Watch with ICE info",
+  "companyName": "Moose Software",
+  "versionLabel": "0.1",
+  "sdkVersion": "3",
+  "targetPlatforms": ["basalt"],
+  "watchapp": {
+    "watchface": true
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
