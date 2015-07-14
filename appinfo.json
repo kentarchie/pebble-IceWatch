@@ -3,7 +3,7 @@
   "shortName": "IceWatch",
   "longName": "Watch with ICE info",
   "companyName": "Moose Software",
-  "versionLabel": "0.1",
+  "versionLabel": "0.2",
   "sdkVersion": "3",
   "targetPlatforms": ["basalt"],
   "watchapp": {

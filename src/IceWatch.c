@@ -10,86 +10,84 @@ static TextLayer *myNameLayer;
 static TextLayer *timeLayer;
 static TextLayer *dateLayer;
 
+static TextLayer * makeTextLayer( Window * win, int x, int y,
+int width, int height, GColor backgroundColor, GColor textColor, const char * font,
+GTextAlignment alignment,char * initialText
+)
+{
+  TextLayer *newLayer = text_layer_create(GRect(x, y, width, height));
+  text_layer_set_background_color(newLayer, backgroundColor);
+  text_layer_set_text_color(newLayer, textColor);
+  text_layer_set_font(newLayer, fonts_get_system_font(font));
+  layer_add_child(window_get_root_layer(win), text_layer_get_layer(newLayer));
+  text_layer_set_text_alignment(newLayer, alignment);
+  text_layer_set_text(newLayer, initialText);
+  return(newLayer);
+} // makeTextLayer
+
 static void connectionSetup()
 {
-  connectionLayer = text_layer_create(GRect(0, 0, 30, 30));
-  text_layer_set_background_color(connectionLayer, GColorWhite);
-  text_layer_set_text_color(connectionLayer, GColorGreen);
-  text_layer_set_font(connectionLayer, fonts_get_system_font(FONT_KEY_DROID_SERIF_28_BOLD ));
-  text_layer_set_text(connectionLayer, "U");
-  layer_add_child(window_get_root_layer(mainWindow), text_layer_get_layer(connectionLayer));
+  connectionLayer = makeTextLayer(mainWindow,0, 0, 30, 30,
+  	GColorWhite,GColorGreen,
+  	FONT_KEY_DROID_SERIF_28_BOLD,
+	GTextAlignmentLeft,
+	"U"
+  );
 } // connectionSetup
 
 static void ICESetup()
 {
-	ICELabelLayer = text_layer_create(GRect(0, 0,  144, 40));
-	ICENameLayer =  text_layer_create(GRect(0, 30, 144, 30));
-	ICEPhoneLayer = text_layer_create(GRect(0, 50, 144, 30));
+  ICELabelLayer = makeTextLayer(mainWindow,0, 0, 144, 40,
+  	GColorWhite,GColorRed,
+  	FONT_KEY_GOTHIC_28_BOLD,
+  	GTextAlignmentCenter,
+  	"ICE"
+  );
 
-  	text_layer_set_background_color(ICELabelLayer, GColorWhite);
-  	text_layer_set_background_color(ICENameLayer, GColorWhite);
-  	text_layer_set_background_color(ICEPhoneLayer, GColorWhite);
+  ICENameLayer = makeTextLayer(mainWindow,0, 30, 144, 30,
+  	GColorWhite,GColorBlack,
+  	FONT_KEY_ROBOTO_CONDENSED_21,
+  	GTextAlignmentCenter,
+  	"Kate Perkins"
+  );
 
-  	text_layer_set_text_color(ICELabelLayer, GColorRed);
-  	text_layer_set_text_color(ICENameLayer, GColorBlack);
-  	text_layer_set_text_color(ICEPhoneLayer, GColorBlack);
-
-  	text_layer_set_text(ICELabelLayer, "ICE");
-  	text_layer_set_text(ICENameLayer,  "Kate Perkins");
-  	text_layer_set_text(ICEPhoneLayer, "630-253-1359");
-
-  	text_layer_set_font(ICELabelLayer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
-  	text_layer_set_font(ICENameLayer,  fonts_get_system_font( FONT_KEY_ROBOTO_CONDENSED_21));
-  	text_layer_set_font(ICEPhoneLayer, fonts_get_system_font( FONT_KEY_ROBOTO_CONDENSED_21));
-
-  	text_layer_set_text_alignment(ICELabelLayer, GTextAlignmentCenter);
-  	text_layer_set_text_alignment(ICENameLayer, GTextAlignmentCenter);
-  	text_layer_set_text_alignment(ICEPhoneLayer, GTextAlignmentCenter);
-
-  	layer_add_child(window_get_root_layer(mainWindow), text_layer_get_layer(ICELabelLayer));
-  	layer_add_child(window_get_root_layer(mainWindow), text_layer_get_layer(ICENameLayer));
-  	layer_add_child(window_get_root_layer(mainWindow), text_layer_get_layer(ICEPhoneLayer));
+  ICEPhoneLayer = makeTextLayer(mainWindow,0, 50, 144, 30,
+  	GColorWhite,GColorBlack,
+  	FONT_KEY_ROBOTO_CONDENSED_21,
+  	GTextAlignmentCenter,
+  	"630-253-1359"
+  );
 } // ICESetup
 
 static void meSetup()
 {
-	myNameLayer = text_layer_create(GRect(0, 80, 140, 60));
-  	text_layer_set_background_color(myNameLayer, GColorClear);
-  	text_layer_set_text_color(myNameLayer, GColorBlack);
-  	text_layer_set_text(myNameLayer, "Kent Archie");
-  	layer_add_child(window_get_root_layer(mainWindow), text_layer_get_layer(myNameLayer));
-  	text_layer_set_font(myNameLayer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
-  	text_layer_set_text_alignment(myNameLayer, GTextAlignmentCenter);
+  myNameLayer = makeTextLayer(mainWindow,0, 80, 140, 60,
+  	GColorClear,GColorBlack,
+  	FONT_KEY_GOTHIC_24_BOLD,
+  	GTextAlignmentCenter,
+  	"Kent Archie"
+  );
 } // meSetup
 
 static void timeSetup()
 {
-  // Create time TextLayer
-  timeLayer = text_layer_create(GRect(0, 100, 144, 50));
-  text_layer_set_background_color(timeLayer, GColorClear);
-  text_layer_set_text_color(timeLayer, GColorBlack);
-  text_layer_set_text(timeLayer, "00:00");
-
-  // Improve the layout to be more like a watchface
-  text_layer_set_font(timeLayer, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
-  text_layer_set_text_alignment(timeLayer, GTextAlignmentCenter);
-
-  // Add it as a child layer to the Window's root layer
-  layer_add_child(window_get_root_layer(mainWindow), text_layer_get_layer(timeLayer));
+  timeLayer = makeTextLayer(mainWindow,0, 100, 144, 50,
+  	GColorClear,GColorBlack,
+  	FONT_KEY_BITHAM_42_BOLD,
+  	GTextAlignmentCenter,
+  	"00:00"
+  );
 } // timeSetup
 
 static void dateSetup()
 {
   // Create date TextLayer
-  dateLayer = text_layer_create(GRect(0, 140, 144, 50));
-  text_layer_set_background_color(dateLayer, GColorClear);
-  text_layer_set_text_color(dateLayer, GColorBlack);
-  text_layer_set_text_alignment(dateLayer, GTextAlignmentCenter);
-
-  text_layer_set_font(dateLayer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
-
-  // Add it as a child layer to the Window's root layer
-  layer_add_child(window_get_root_layer(mainWindow), text_layer_get_layer(dateLayer));
+  dateLayer = makeTextLayer(mainWindow,0, 140, 144, 50,
+  	GColorClear,GColorBlack,
+  	FONT_KEY_GOTHIC_24_BOLD,
+  	GTextAlignmentCenter,
+  	"31 September 2015"
+  );
 } // dateSetup
 
 static void updateTime() 
