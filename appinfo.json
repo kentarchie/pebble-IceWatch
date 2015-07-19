@@ -13,6 +13,17 @@
     "dummy": 0
   },
   "resources": {
-    "media": []
+    "media": [
+   {
+      "type": "png",
+      "name": "bluetoothOn",
+      "file": "images/bluetooth32-color.png"
+   }
+   ,{
+      "type": "png",
+      "name": "bluetoothOff",
+      "file": "images/stop32-color.png"
+   }
+    ]
   }
 }

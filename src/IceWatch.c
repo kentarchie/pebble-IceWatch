@@ -9,10 +9,15 @@ static TextLayer *ICEPhoneLayer;
 static TextLayer *myNameLayer;
 static TextLayer *timeLayer;
 static TextLayer *dateLayer;
+static GBitmap *bluetoothImageOn,*bluetoothImageOff;
+static BitmapLayer *btBitMap,*btOffBitMap;
 
 static TextLayer * makeTextLayer( Window * win, int x, int y,
-int width, int height, GColor backgroundColor, GColor textColor, const char * font,
-GTextAlignment alignment,char * initialText
+                                  int width, int height, 
+				  GColor backgroundColor, GColor textColor, 
+				  const char * font,
+                                  GTextAlignment alignment,
+				  char * initialText
 )
 {
   TextLayer *newLayer = text_layer_create(GRect(x, y, width, height));
@@ -27,12 +32,13 @@ GTextAlignment alignment,char * initialText
 
 static void connectionSetup()
 {
-  connectionLayer = makeTextLayer(mainWindow,0, 0, 30, 30,
-  	GColorWhite,GColorGreen,
-  	FONT_KEY_DROID_SERIF_28_BOLD,
-	GTextAlignmentLeft,
-	"U"
-  );
+   bluetoothImageOn  = gbitmap_create_with_resource(RESOURCE_ID_bluetoothOn);
+   bluetoothImageOff = gbitmap_create_with_resource(RESOURCE_ID_bluetoothOff);
+
+   btBitMap = bitmap_layer_create(GRect(0, 0, 32, 32));
+
+   bitmap_layer_set_bitmap(btBitMap, bluetoothImageOff); // default off
+   layer_add_child(window_get_root_layer(mainWindow), bitmap_layer_get_layer(btBitMap));
 } // connectionSetup
 
 static void ICESetup()
@@ -94,12 +100,10 @@ static void updateTime()
 {
   time_t temp = time(NULL); 
   struct tm *tickTime = localtime(&temp);
-
-  // Create a long-lived buffer
   static char timeBuffer[] = "00:00";
 
   // Write the current hours and minutes into the buffer
-    strftime(timeBuffer, sizeof("00:00"), "%H:%M", tickTime);
+  strftime(timeBuffer, sizeof("00:00"), "%H:%M", tickTime);
 
   // Display this time on the TextLayer
   text_layer_set_text(timeLayer, timeBuffer);
@@ -109,20 +113,25 @@ static void updateDate()
 {
   time_t temp = time(NULL); 
   struct tm *tickTime = localtime(&temp);
-
-  // Create a long-lived buffer
   static char dateBuffer[] = "31 September 2015";
 
-  // Write the current hours and minutes into the buffer
-    strftime(dateBuffer, sizeof(dateBuffer), "%e %B %Y", tickTime);
+  strftime(dateBuffer, sizeof(dateBuffer), "%e %B %Y", tickTime);
 
   // Display this time on the TextLayer
   text_layer_set_text(dateLayer, dateBuffer);
 } // updateDate
 
-static void handle_bluetooth(bool connected) {
-  text_layer_set_text(connectionLayer, connected ? "C" : "U");
-}
+static void bluetoothHandler(bool connected) 
+{
+  if(connected) {
+     //APP_LOG(APP_LOG_LEVEL_DEBUG, "connected true");
+     bitmap_layer_set_bitmap(btBitMap, bluetoothImageOn);
+  }
+  else {
+     //APP_LOG(APP_LOG_LEVEL_DEBUG, "connected false");
+     bitmap_layer_set_bitmap(btBitMap, bluetoothImageOff);
+  }
+} // bluetoothHandler
 
 static void mainWindowLoad(Window *window)
 {
@@ -135,7 +144,7 @@ static void mainWindowLoad(Window *window)
   // Make sure the time is displayed from the start
   updateTime();
   updateDate();
-  handle_bluetooth(bluetooth_connection_service_peek());
+  bluetoothHandler(bluetooth_connection_service_peek());
 } // mainWindowLoad
 
 static void mainWindowUnload(Window *window)
@@ -159,7 +168,7 @@ static void init()
 
   // Set handlers to manage the elements inside the Window
   window_set_window_handlers(mainWindow, (WindowHandlers) {
-    .load = mainWindowLoad,
+    .load   = mainWindowLoad,
     .unload = mainWindowUnload
   });
 
@@ -168,7 +177,7 @@ static void init()
   
   // Register with TickTimerService
   tick_timer_service_subscribe(MINUTE_UNIT, tickHandler);
-  bluetooth_connection_service_subscribe(handle_bluetooth);
+  bluetooth_connection_service_subscribe(bluetoothHandler);
 } // init
 
 static void deinit()
