@@ -1,6 +1,8 @@
 #include <pebble.h>
 // bluetooth code taken directly from classio-battery-connection example code
   
+#define FALSE 1
+#define TRUE 0
 static Window *mainWindow;
 static TextLayer *connectionLayer;
 static TextLayer *ICELabelLayer;
@@ -11,6 +13,10 @@ static TextLayer *timeLayer;
 static TextLayer *dateLayer;
 static GBitmap *bluetoothImageOn,*bluetoothImageOff;
 static BitmapLayer *btBitMap,*btOffBitMap;
+static int ConnectionLost=FALSE;
+static int BuzzerInterval=1500;
+static AppTimer * btBuzzerTimer = NULL;
+
 
 static TextLayer * makeTextLayer( Window * win, int x, int y,
                                   int width, int height, 
@@ -121,15 +127,30 @@ static void updateDate()
   text_layer_set_text(dateLayer, dateBuffer);
 } // updateDate
 
+static void buzzer2() 
+{
+  app_timer_cancel( btBuzzerTimer);
+  vibes_short_pulse();
+  bitmap_layer_set_bitmap(btBitMap, bluetoothImageOff);
+  ConnectionLost = TRUE;
+} // buzzer2 
+
 static void bluetoothHandler(bool connected) 
 {
   if(connected) {
      //APP_LOG(APP_LOG_LEVEL_DEBUG, "connected true");
      bitmap_layer_set_bitmap(btBitMap, bluetoothImageOn);
+     if(ConnectionLost == TRUE) {
+         vibes_short_pulse();
+         ConnectionLost = FALSE;
+     }    
   }
   else {
      //APP_LOG(APP_LOG_LEVEL_DEBUG, "connected false");
-     bitmap_layer_set_bitmap(btBitMap, bluetoothImageOff);
+    if(ConnectionLost == FALSE) {
+       vibes_long_pulse();
+       btBuzzerTimer = app_timer_register(BuzzerInterval, buzzer2,NULL);
+    }
   }
 } // bluetoothHandler
 
