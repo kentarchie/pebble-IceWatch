@@ -5,6 +5,7 @@
   "companyName": "Moose Software",
   "versionLabel": "0.2",
   "sdkVersion": "3",
+  "capabilities": [ "configurable" ],
   "targetPlatforms": ["basalt"],
   "watchapp": {
     "watchface": true
