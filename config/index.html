@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IceWatch</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type='text/css' rel='stylesheet' href='css/slate.min.css' />
+    <link type='text/css' rel='stylesheet' href='css/config.css' />
+    <script type'text/javascript' src='js/slate.min.js'></script>
+  </head>
+
+  <body>
+    <h1 class='title'>IceWatch Pebble Watch Face</h1>
+
+    <div class='item-container'>
+      <div class='item-container-content'>
+        <div class='item'>
+          Use this configuration page to choose the settings you would like applied to this app.
+        </div>
+      </div>
+    </div>
+
+    <div class='item-container'>
+      <div class='item-container-header'>Your Name</div>
+      <div class='item-container-content'>
+          <label class='item'>
+             <div class="item-input-wrapper">
+                <input type='text' name='myName' id='myName' class='item-input' placeholder='My Name' />
+             </div>
+	  </label>
+      </div>
+    </div>
+
+    <div class='item-container'>
+      <div class='item-container-header'>Emergency Contact Name</div>
+      <div class='item-container-content'>
+          <label class='item'>
+             <div class="item-input-wrapper">
+                <input type='text' name='iceName' id='iceName' class='item-input' placeholder='My Contacts Name' />
+             </div>
+	  </label>
+      </div>
+    </div>
+
+    <div class='item-container'>
+      <div class='item-container-header'>Emergency Contact Phone</div>
+      <div class='item-container-content'>
+          <label class='item'>
+             <div class="item-input-wrapper">
+                <input type='text' name='icePhone' id='icePhone' class='item-input' placeholder='My Contacts Phone' />
+             </div>
+	  </label>
+      </div>
+    </div>
+
+    <div class="item-container">
+      <div class="item-container-header">12 Or 24 Hour Clock</div>
+      <div class="item-container-content">
+	<table>
+	<tr>
+           <td class='buttonCell'>
+             <label class="item"> 12 Hour 
+             <input type="radio" class="myRadio " name='radioHour' id="radioHour12" value="12" checked />
+	     </label>
+	   </td>
+           <td class='buttonCell'>
+             <label class="item"> 24 Hour 
+             <input type="radio" class="myRadio " name='radioHour' id="radioHour24" value="24" />
+	     </label>
+	  </td>
+	</tr>
+	</table>
+      </div>
+    </div>
+
+    <div class='item-container'>
+      <div class='button-container'>
+	<table>
+	<tr>
+           <td class='buttonCell'>
+	      <button type='button' id='b-cancel' name='b-cancel' class='myButton' value='Cancel'>Cancel</button>
+	   </td>
+           <td class='buttonCell'>
+	      <button type='button' id='b-submit' name='b-submit' class='myButton' value='Submit'>Submit</button>
+	   </td>
+	</tr>
+	</table>
+      </div>
+    </div>
+
+    <script type='text/javascript' src='js/config.js'></script>
+  </body>
+</html>

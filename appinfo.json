@@ -5,14 +5,27 @@
   "companyName": "Moose Software",
   "versionLabel": "0.2",
   "sdkVersion": "3",
-  "capabilities": [ "configurable" ],
-  "targetPlatforms": ["basalt"],
+  "capabilities": [
+    "configurable"
+  ],
+  "targetPlatforms": [
+    "basalt"
+  ],
   "watchapp": {
     "watchface": true
   },
   "appKeys": {
-    "dummy": 0
+    "KEY_CONTACT_NAME"    : 0
+    ,"KEY_CONTACT_PHONE"  : 1
+    ,"KEY_MY_NAME"        : 2
+    ,"KEY_12OR24"         : 3
+    ,"KEY_BATTERY_ON"     : 4
+    ,"KEY_ICE_BACKGROUND" : 5
+    ,"KEY_ICE_TEXTCOLOR"  : 6
+    ,"KEY_ME_BACKGROUND"  : 7
+    ,"KEY_ME_TEXTCOLOR"   : 8
   },
+
   "resources": {
     "media": [
    {
