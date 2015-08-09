@@ -1,0 +1,11 @@
+extern Window *mainWindow;
+extern TextLayer *ICELabelLayer;
+extern TextLayer *ICENameLayer;
+extern TextLayer *ICEPhoneLayer;
+extern TextLayer *myNameLayer;
+extern TextLayer *timeLayer;
+extern TextLayer *dateLayer;
+extern GBitmap *bluetoothImageOn,*bluetoothImageOff;
+extern BitmapLayer *btBitMap;
+extern int ConnectionLost;
+extern AppTimer * btBuzzerTimer;
