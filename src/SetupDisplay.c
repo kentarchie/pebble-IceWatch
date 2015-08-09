@@ -5,11 +5,11 @@
 
 BitmapLayer* connectionSetup()
 {
-   BitmapLayer* bluetoothLayer = bitmap_layer_create(GRect(0, 0, 32, 32));
+   BitmapLayer* btLayer = bitmap_layer_create(GRect(0, 0, 32, 32));
 
-   bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOff); // default off
-   layer_add_child(window_get_root_layer(mainWindow), bitmap_layer_get_layer(bluetoothLayer));
-	return(bluetoothLayer);
+   bitmap_layer_set_bitmap(btLayer, bluetoothImageOff); // default off
+   layer_add_child(window_get_root_layer(mainWindow), bitmap_layer_get_layer(btLayer));
+	return(btLayer);
 } // connectionSetup
 
 TextLayer* ICELabelSetup()

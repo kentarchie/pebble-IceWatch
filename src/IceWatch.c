@@ -14,7 +14,7 @@ TextLayer *myNameLayer;
 TextLayer *timeLayer;
 TextLayer *dateLayer;
 GBitmap *bluetoothImageOn,*bluetoothImageOff;
-BitmapLayer *btBitMap;
+BitmapLayer *bluetoothLayer;
 int ConnectionLost;
 AppTimer * btBuzzerTimer;
 
@@ -79,7 +79,7 @@ static void mainWindowLoad(Window *window)
   myNameLayer = meSetup();
   timeLayer = timeSetup();
   dateLayer = dateSetup();
-  connectionSetup();
+  bluetoothLayer = connectionSetup();
 
   loadSettings();
    

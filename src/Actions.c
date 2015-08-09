@@ -32,7 +32,8 @@ void buzzer2()
 {
   app_timer_cancel( btBuzzerTimer);
   vibes_short_pulse();
-  bitmap_layer_set_bitmap(btBitMap, bluetoothImageOff);
+  //bitmap_layer_set_bitmap(btBitMap, bluetoothImageOff);
+  bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOff);
   ConnectionLost = TRUE;
 } // buzzer2 
 
@@ -40,7 +41,8 @@ void bluetoothHandler(bool connected)
 {
   if(connected) {
      //APP_LOG(APP_LOG_LEVEL_DEBUG, "connected true");
-     bitmap_layer_set_bitmap(btBitMap, bluetoothImageOn);
+     //bitmap_layer_set_bitmap(btBitMap, bluetoothImageOn);
+     bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOn);
      if(ConnectionLost == TRUE) {
          vibes_short_pulse();
          ConnectionLost = FALSE;
