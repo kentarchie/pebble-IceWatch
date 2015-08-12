@@ -2,9 +2,9 @@
 // bluetooth code taken directly from classio-battery-connection example code
   
 #include "Constants.h"
-#include "Common.h"
 #include "SetupDisplay.h"
 #include "Actions.h"
+#include "ConfigHandlers.h"
 
 Window *mainWindow;
 TextLayer *ICELabelLayer;
@@ -13,57 +13,45 @@ TextLayer *ICEPhoneLayer;
 TextLayer *myNameLayer;
 TextLayer *timeLayer;
 TextLayer *dateLayer;
+
 GBitmap *bluetoothImageOn,*bluetoothImageOff;
 BitmapLayer *bluetoothLayer;
+
 int ConnectionLost;
 AppTimer * btBuzzerTimer;
-
-static void processMyName(DictionaryIterator *iter, void *context) 
-{
-   char * myName = "Name";
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch processing MyName");
-   Tuple *tuple = dict_find(iter, KEY_MY_NAME);
-	if(!tuple) return;
-
-   if(tuple->value->cstring) myName = tuple->value->cstring;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch myName 1=:%s:",myName);
-
-   // save new value if changed
-   if((myName != NULL) && (strcmp(myName,"Name") != 0)) {
-     APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch myName=:%s:",myName);
-     // Persist value
-     persist_write_string(KEY_MY_NAME, myName);
-  	  text_layer_set_text(myNameLayer, myName);
-   } else {
-     APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch myName missing");
-   }
-} // processMyName
+int hourFormat = 24;
 
 static void inbox_received_handler(DictionaryIterator *iter, void *context) 
 {
    APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch received message");
+	processContactName(iter, context);
+	processContactPhone(iter, context);
 	processMyName(iter, context);
+	processRadioHour(iter, context);
+	processBatteryStatus(iter, context);
+	processICEBackground(iter, context); 
+	processICETextColor(iter, context); 
+	processMeBackground(iter, context);
+	processMeTextColor(iter, context);
 } // inbox_received_handler
 
 static void loadSettings() 
 {
-	char * stringBuffer;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch loading settings");
-	if(persist_exists(KEY_MY_NAME)){
-      APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch loading myName");
-		int strSize = persist_get_size(KEY_MY_NAME);
-      APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch my name size=%d",strSize);
-		if((stringBuffer = malloc(strSize)) != NULL){
-			int actualSize = persist_read_string(KEY_MY_NAME, stringBuffer, strSize);
-  	  		text_layer_set_text(myNameLayer, stringBuffer);
-      	APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch my name set actualSize=%d",actualSize);
-      	APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch my name =:%s:",stringBuffer);
-			//free(stringBuffer);
-		}
-		else {
-  	  		text_layer_set_text(myNameLayer, "No Name");
-		}
-	}
+	loadSettingsText(KEY_CONTACT_NAME,ICENameLayer,"ICE Name");
+	loadSettingsText(KEY_CONTACT_PHONE,ICEPhoneLayer,"ICE Phone");
+	loadSettingsText(KEY_MY_NAME,myNameLayer,"My Name");
+
+	loadSettingsBackground(KEY_ICE_BACKGROUND,ICENameLayer,0xA8A8A8);
+	loadSettingsBackground(KEY_ICE_BACKGROUND,ICEPhoneLayer,0xA8A8A8);
+	loadSettingsBackground(KEY_ME_BACKGROUND,myNameLayer,0xA8A8A8);
+
+	loadSettingsTextColor(KEY_ME_TEXTCOLOR,myNameLayer,GColorBlackARGB8);
+	loadSettingsTextColor(KEY_ICE_TEXTCOLOR,ICENameLayer,GColorBlackARGB8);
+	loadSettingsTextColor(KEY_ICE_TEXTCOLOR,ICEPhoneLayer,GColorBlackARGB8);
+
+	hourFormat = loadSettingsInt(KEY_12OR24,12);
+	int batteryOn = loadSettingsBoolean(KEY_BATTERY_ON,FALSE);
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch batteryOn=%d",batteryOn);
 } // loadSettings
 
 static void mainWindowLoad(Window *window)

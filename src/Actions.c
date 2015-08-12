@@ -1,7 +1,7 @@
 #include <pebble.h>
 #include "Constants.h"
-#include "Common.h"
 #include "Global.h"
+extern int hourFormat;
 
 void updateTime() 
 {
@@ -9,8 +9,13 @@ void updateTime()
   struct tm *tickTime = localtime(&temp);
   static char timeBuffer[] = "00:00";
 
+  if (hourFormat == 24) {
+    strftime(timeBuffer, sizeof("00:00"), "%H:%M", tickTime);
+  } else {
+    strftime(timeBuffer, sizeof("00:00"), "%I:%M", tickTime);
+  }
+
   // Write the current hours and minutes into the buffer
-  strftime(timeBuffer, sizeof("00:00"), "%H:%M", tickTime);
 
   // Display this time on the TextLayer
   text_layer_set_text(timeLayer, timeBuffer);
@@ -56,3 +61,13 @@ void bluetoothHandler(bool connected)
     }
   }
 } // bluetoothHandler
+
+void BatteryStatusOn() 
+{
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "BatteryStatusOn");
+} // BatteryStatusOn 
+
+void BatteryStatusOff() 
+{
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "BatteryStatusOff");
+} // BatteryStatusOff 
