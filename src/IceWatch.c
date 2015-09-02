@@ -23,16 +23,23 @@ int hourFormat = 24;
 
 static void inbox_received_handler(DictionaryIterator *iter, void *context) 
 {
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch received message");
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: received message");
+	//logDictionary(iter);
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: after dict print");
 	processContactName(iter, context);
 	processContactPhone(iter, context);
 	processMyName(iter, context);
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: processed Name");
 	processRadioHour(iter, context);
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: processed radioHour");
 	processBatteryStatus(iter, context);
+
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_hendler: starting colors");
 	processICEBackground(iter, context); 
 	processICETextColor(iter, context); 
 	processMeBackground(iter, context);
 	processMeTextColor(iter, context);
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_hendler: DONE");
 } // inbox_received_handler
 
 static void loadSettings() 
@@ -50,8 +57,10 @@ static void loadSettings()
 	loadSettingsTextColor(KEY_ICE_TEXTCOLOR,ICEPhoneLayer,GColorBlackARGB8);
 
 	hourFormat = loadSettingsInt(KEY_12OR24,12);
+	updateTime();
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch loadSettings: hourFormat=%d",hourFormat);
 	int batteryOn = loadSettingsBoolean(KEY_BATTERY_ON,FALSE);
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch batteryOn=%d",batteryOn);
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch loadSettings: batteryOn=%d",batteryOn);
 } // loadSettings
 
 static void mainWindowLoad(Window *window)

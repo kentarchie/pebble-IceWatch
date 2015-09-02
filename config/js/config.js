@@ -1,14 +1,34 @@
-$().ready(init);
+//$().ready(init);
+
+function clearLog()
+{
+  $('#logger').html('');
+} // clearLog
+
+function logger(str)
+{
+  var oldStr = $('#logger').html();
+  $('#logger').html(oldStr + '<hr />' + str);
+} // logger
+
+(function(){
+	clearLog();
+   logger('Ready to Zepto!')
+   $("#b-cancel").click(cancelForm);
+   $("#b-submit").click(sendForm);
+   logger("init called ");
+	loadOptions();
+})();
 
 function init()
 {
-   console.log("configPage: config page ready");
+   //logger("configPage: config page ready");
 
    $("#b-cancel").click(cancelForm);
    $("#b-submit").click(sendform);
 
    //Set form values to whatever is passed in.
-   console.log('configPage: getting passed parameters');
+   logger("init called ");
 	loadOptions();
 } // init
 
@@ -16,27 +36,44 @@ function loadOptions() {
   var $backgroundColorPicker = $('#backgroundColorPicker');
   var $timeFormatCheckbox = $('#timeFormatCheckbox');
 
-  if (localStorage.myName) $('#myName').value = localStorage.myName;
-  if (localStorage.iceName) $('#iceName').value = localStorage.iceName;
-  if (localStorage.icePhone) $('#icePhone').value = localStorage.icePhone;
-  if (localStorage.radioHour) {
-  	 $('#radioHour12').checked = false;
-  	 $('#radioHour24').checked = false;
-  	 if(localStorage.radioHour == 12) $('#radioHour12').checked = true;
-  	 if(localStorage.radioHour == 24) $('#radioHour24').checked = true;
+  var storeString = JSON.stringify(localStorage);
+  //logger(storeString);
+  logger("Test Storage");
+  logger( JSON.stringify(localStorage));
+
+  if (localStorage.myName) {
+  	  $('#myName').val(localStorage.myName);
+	  logger('myName=' + localStorage.myName);
   }
-}
+  if (localStorage.iceName) $('#iceName').val(localStorage.iceName);
+  if (localStorage.icePhone) $('#icePhone').val(localStorage.icePhone);
+  logger('loadOptions: radiohour=:'+ localStorage.radioHour +':');
+  if (localStorage.radioHour) {
+	 $('#radioHour12').prop('checked',false);
+	 $('#radioHour14').prop('checked',false);
+  	 if(localStorage.radioHour == 12) $('#radioHour12').prop('checked',true);
+  	 if(localStorage.radioHour == 24) $('#radioHour24').prop('checked',true);
+  }
+} // loadOptions
 
 function saveOptions()
 {
-   console.log("saveOptions called");
-   var options = {}
-   options['myName']   = $('#myName').val();
-   options['iceName']  = $('#iceName').val();
-   options['icePhone'] = $('#icePhone').val();
-	if($('#radioHour12).checked) options['radioHour'] = 12;
-	if($('#radioHour24).checked) options['radioHour'] = 24;
-   //console.log('saveOptions: options=:'+ JSON.stringify(options)+':');
+   //logger("saveOptions called");
+   var radioVal = $('input[name="radioHour"]:checked').val();
+	logger('saveOptions: radiohour=:'+ radioVal +':');
+   var options = {
+   	"iceName"  : $('#iceName').val()
+   	,"icePhone" : $('#icePhone').val()
+   	,"myName"   : $('#myName').val()
+		,"radioHour" : radioVal
+		,"batteryON" : true
+		,"ICE_BACKGROUND" : 5
+		,"ICE_TEXTCOLOR" : 6
+		,"ME_BACKGROUND" : 7
+		,"ME_TEXTCOLOR" : 8
+	};
+
+   logger('saveOptions: options=:'+ JSON.stringify(options)+':');
 
    localStorage.myName = options.myName;
    localStorage.iceName = options.iceName;
@@ -48,17 +85,17 @@ function saveOptions()
 
 function sendForm()
 {
-   console.log("configPage: Submit clicked");
+   //logger("configPage: Submit clicked");
 	var return_to = getQueryParam('return_to', 'pebblejs://close#');
 
    var location = return_to + encodeURIComponent(JSON.stringify(saveOptions()));
-   console.log("configPage: Warping to: " + location);
-   document.location.href = location;
+   logger("configPage: Warping to: " + location);
+   document.location = location;
 } // sendForm
 
 function cancelForm()
 {
-   console.log("configPage: Cancel clicked");
+   //logger("configPage: Cancel clicked");
    document.location = "pebblejs://close";
 } // cancelForm
 

@@ -1,3 +1,4 @@
+void logDictionary( DictionaryIterator *);
 void processContactName(DictionaryIterator * , void *);
 void processContactPhone(DictionaryIterator *, void *);
 void processMyName(DictionaryIterator *, void *);

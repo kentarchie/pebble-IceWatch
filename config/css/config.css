@@ -17,3 +17,9 @@
    color : white; 
    font-size : x-large; 
 }
+#logger {
+	border: 1px solid red;
+	width: 100%;
+	height:100px;
+	overflow:auto;
+}
