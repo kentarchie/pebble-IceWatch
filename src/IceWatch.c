@@ -34,12 +34,12 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context)
    APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: processed radioHour");
 	processBatteryStatus(iter, context);
 
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_hendler: starting colors");
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: starting colors");
 	processICEBackground(iter, context); 
 	processICETextColor(iter, context); 
 	processMeBackground(iter, context);
 	processMeTextColor(iter, context);
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_hendler: DONE");
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: DONE");
 } // inbox_received_handler
 
 static void loadSettings() 

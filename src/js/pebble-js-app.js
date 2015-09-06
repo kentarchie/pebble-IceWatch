@@ -37,11 +37,23 @@ function processConfig(e)
   watchData['KEY_CONTACT_PHONE']  = '123-555-1234';
   watchData['KEY_MY_NAME']    = 'My Name';
   watchData['KEY_12OR24'] = 12;
+  watchData['KEY_ICE_BACKGROUND'] = 0;
 
-  if (configData.iceName)   watchData['KEY_CONTACT_NAME']   =  configData.iceName;
-  if (configData.icePhone)  watchData['KEY_CONTACT_PHONE']  =  configData.icePhone;
-  if (configData.myName)    watchData['KEY_MY_NAME']    =  configData.myName;
-  if (configData.radioHour) watchData['KEY_12OR24'] =  parseInt(configData.radioHour);
+  if ('iceName' in configData) 
+  	 watchData['KEY_CONTACT_NAME']   =  configData.iceName;
+  if ('icePhone' in configData) 
+  	 watchData['KEY_CONTACT_PHONE']  =  configData.icePhone;
+  if ('myName' in configData) 
+  	 watchData['KEY_MY_NAME']    =  configData.myName;
+  if ('radioHour' in configData) 
+  	 watchData['KEY_12OR24'] =  parseInt(configData.radioHour);
+  if ('iceBackground' in configData) {
+		var iceBack = configData['iceBackground'];
+  		console.log('phoneSide: processConfig: iceBack :' + iceBack);
+  		//watchData['KEY_ICE_BACKGROUND'] = parseInt(iceBack.substring(2, 4), 16);
+  		watchData['KEY_ICE_BACKGROUND'] = parseInt(iceBack, 16);
+  }
+
   console.log('phoneSide: processConfig: watchData setup: ' + JSON.stringify(watchData));
 
   Pebble.sendAppMessage(watchData, 

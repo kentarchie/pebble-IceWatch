@@ -7,8 +7,10 @@ extern int hourFormat;
 
 void setBackgroundColor(int color,TextLayer * layer)
 {
+  APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch setBackgroundColor value=:%d:",color);
   GColor background_color = GColorFromHEX(color);
   text_layer_set_background_color(layer, background_color);
+  APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch setBackgroundColor done");
 } // setBackgroundColor
 
 void setTextColor(int color,TextLayer * layer)
@@ -143,14 +145,17 @@ void processICEBackground(DictionaryIterator *iter, void *context)
    int iceBackground = 0;
    APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch processing iceBackground");
    Tuple *tuple = dict_find(iter, KEY_ICE_BACKGROUND);
-	if(!tuple) return;
+	if(!tuple) {
+   	APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch no tuple iceBackground");
+		return;
+	}
 
    if(tuple->value->int32) iceBackground = tuple->value->int32;
    APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch iceBackground 1=:%d:",iceBackground);
 
    // save new value if changed
    if(iceBackground != 0) {
-     APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch iceBackground=:%d:",iceBackground);
+     APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch iceBackground 2 =:%d:",iceBackground);
      persist_write_int(KEY_ICE_BACKGROUND, iceBackground); // Persist value
      //setBackgroundColor(iceBackground,ICELabelLayer);
      setBackgroundColor(iceBackground,ICENameLayer);

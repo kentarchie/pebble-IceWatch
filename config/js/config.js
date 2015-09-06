@@ -54,6 +54,7 @@ function loadOptions() {
   	 if(localStorage.radioHour == 12) $('#radioHour12').prop('checked',true);
   	 if(localStorage.radioHour == 24) $('#radioHour24').prop('checked',true);
   }
+  if (localStorage.iceBackgroundColor) $('#iceBackgroundColor').val(localStorage.iceBackgroundColor);
 } // loadOptions
 
 function saveOptions()
@@ -67,11 +68,12 @@ function saveOptions()
    	,"myName"   : $('#myName').val()
 		,"radioHour" : radioVal
 		,"batteryON" : true
-		,"ICE_BACKGROUND" : 5
-		,"ICE_TEXTCOLOR" : 6
-		,"ME_BACKGROUND" : 7
-		,"ME_TEXTCOLOR" : 8
+		,"iceBackground" : $('#iceBackgroundColor').val()
+		,"iceTextColor" : 6
+		,"meBackground" : 7
+		,"meTextColor" : 8
 	};
+   logger("iceBackgroundColor = " +  $('#iceBackgroundColor').val());
 
    logger('saveOptions: options=:'+ JSON.stringify(options)+':');
 
@@ -79,6 +81,7 @@ function saveOptions()
    localStorage.iceName = options.iceName;
    localStorage.icePhone = options.icePhone;
    localStorage.radioHour = options.radioHour;
+   localStorage.iceBackgroundColor = options.iceBackground;
 
    return options;
 } // saveOptions
@@ -88,6 +91,7 @@ function sendForm()
    //logger("configPage: Submit clicked");
 	var return_to = getQueryParam('return_to', 'pebblejs://close#');
 
+   logger("options = " +  JSON.stringify(saveOptions()));
    var location = return_to + encodeURIComponent(JSON.stringify(saveOptions()));
    logger("configPage: Warping to: " + location);
    document.location = location;
