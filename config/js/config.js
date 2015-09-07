@@ -54,7 +54,14 @@ function loadOptions() {
   	 if(localStorage.radioHour == 12) $('#radioHour12').prop('checked',true);
   	 if(localStorage.radioHour == 24) $('#radioHour24').prop('checked',true);
   }
-  if (localStorage.iceBackgroundColor) $('#iceBackgroundColor').val(localStorage.iceBackgroundColor);
+  if (localStorage.iceBackgroundColor) 
+  		$('#iceBackgroundColor').val(localStorage.iceBackgroundColor);
+  if (localStorage.iceTextColor) 
+  		$('#iceTextColor').val(localStorage.iceTextColor);
+  if (localStorage.meBackgroundColor) 
+  		$('#meBackgroundColor').val(localStorage.meBackgroundColor);
+  if (localStorage.meTextColor) 
+  		$('#meTextColor').val(localStorage.meTextColor);
 } // loadOptions
 
 function saveOptions()
@@ -69,9 +76,9 @@ function saveOptions()
 		,"radioHour" : radioVal
 		,"batteryON" : true
 		,"iceBackground" : $('#iceBackgroundColor').val()
-		,"iceTextColor" : 6
-		,"meBackground" : 7
-		,"meTextColor" : 8
+		,"iceTextColor" : $('#iceTextColor').val()
+		,"meBackground" : $('#meBackgroundColor').val()
+		,"meTextColor" : $('#meTextColor').val()
 	};
    logger("iceBackgroundColor = " +  $('#iceBackgroundColor').val());
 
@@ -82,6 +89,9 @@ function saveOptions()
    localStorage.icePhone = options.icePhone;
    localStorage.radioHour = options.radioHour;
    localStorage.iceBackgroundColor = options.iceBackground;
+   localStorage.iceTextColor = options.iceTextColor;
+   localStorage.meBackgroundColor = options.meBackground;
+   localStorage.meTextColor = options.meBackground;
 
    return options;
 } // saveOptions
