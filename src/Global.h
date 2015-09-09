@@ -5,6 +5,7 @@ extern TextLayer *ICEPhoneLayer;
 extern TextLayer *myNameLayer;
 extern TextLayer *timeLayer;
 extern TextLayer *dateLayer;
+extern TextLayer *batteryLayer;
 extern GBitmap *bluetoothImageOn;
 extern GBitmap *bluetoothImageOff;
 extern BitmapLayer *bluetoothLayer;

@@ -1,5 +1,6 @@
 #include <pebble.h>
-// bluetooth code taken directly from classio-battery-connection example code
+// bluetooth code taken from classio-battery-connection example code
+// battery status code taken from classio-battery-connection example code
   
 #include "Constants.h"
 #include "SetupDisplay.h"
@@ -13,6 +14,7 @@ TextLayer *ICEPhoneLayer;
 TextLayer *myNameLayer;
 TextLayer *timeLayer;
 TextLayer *dateLayer;
+TextLayer *batteryLayer;
 
 GBitmap *bluetoothImageOn,*bluetoothImageOff;
 BitmapLayer *bluetoothLayer;
@@ -77,11 +79,13 @@ static void mainWindowLoad(Window *window)
   timeLayer = timeSetup();
   dateLayer = dateSetup();
   bluetoothLayer = connectionSetup();
+  batteryLayer = batterySetup();
 
   loadSettings();
    
   // Make sure the time is displayed from the start
   updateTime();
+  handleBattery(battery_state_service_peek());
   updateDate();
   bluetoothHandler(bluetooth_connection_service_peek());
 } // mainWindowLoad
@@ -97,6 +101,7 @@ static void mainWindowUnload(Window *window)
 static void tickHandler(struct tm *tickTime, TimeUnits units_changed)
 {
   updateTime();
+  handleBattery(battery_state_service_peek());
 } // tickHandler
   
 static void init()
@@ -114,8 +119,9 @@ static void init()
   // Show the Window on the watch, with animated=true
   window_stack_push(mainWindow, true);
   
-  // Register with TickTimerService
+  // Register service handlers
   tick_timer_service_subscribe(MINUTE_UNIT, tickHandler);
+  battery_state_service_subscribe(handleBattery);
   bluetooth_connection_service_subscribe(bluetoothHandler);
 
   app_message_register_inbox_received(inbox_received_handler);

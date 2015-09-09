@@ -71,3 +71,16 @@ void BatteryStatusOff()
 {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "BatteryStatusOff");
 } // BatteryStatusOff 
+
+void handleBattery(BatteryChargeState charge_state)
+{
+  static char battery_text[] = "100%";
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "handleBattery start");
+
+  if (charge_state.is_charging) {
+    snprintf(battery_text, sizeof(battery_text), "chg");
+  } else {
+    snprintf(battery_text, sizeof(battery_text), "%d%%", charge_state.charge_percent);
+  }
+  text_layer_set_text(batteryLayer, battery_text);
+} //handleBattery

@@ -5,3 +5,4 @@ TextLayer* ICEPhoneSetup();
 TextLayer* meSetup();
 TextLayer* timeSetup();
 TextLayer* dateSetup();
+TextLayer* batterySetup();

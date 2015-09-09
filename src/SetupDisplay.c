@@ -30,6 +30,17 @@ BitmapLayer* connectionSetup()
 	return(btLayer);
 } // connectionSetup
 
+TextLayer* batterySetup()
+{
+   TextLayer* batLayer = makeTextLayer(mainWindow,100, 0, 50, 25,
+  		GColorWhite,GColorBlue,
+		FONT_KEY_GOTHIC_24,
+  		GTextAlignmentCenter,
+  		"100%"
+   );
+  return(batLayer);
+} // batterySetup
+
 TextLayer* ICELabelSetup()
 {
    TextLayer* labelLayer = makeTextLayer(mainWindow,0, 0, 144, 40,
@@ -47,7 +58,7 @@ TextLayer* ICENameSetup()
   		GColorWhite,GColorBlack,
   		FONT_KEY_ROBOTO_CONDENSED_21,
   		GTextAlignmentCenter,
-  		"Kate Perkins"
+  		"Contact Name"
   );
   return(nameLayer);
 } // ICENameSetup
@@ -58,7 +69,7 @@ TextLayer* ICEPhoneSetup()
   		GColorWhite,GColorBlack,
   		FONT_KEY_ROBOTO_CONDENSED_21,
   		GTextAlignmentCenter,
-  		"630-253-1359"
+  		"000-555-1234"
   );
   return(phoneLayer);
 } // ICEPhoneSetup
@@ -69,7 +80,7 @@ TextLayer* meSetup()
   		GColorClear,GColorBlack,
   		FONT_KEY_GOTHIC_24_BOLD,
   		GTextAlignmentCenter,
-  		"Kent Archie"
+  		"My Name"
   );
   return(meLayer);
 } // meSetup
