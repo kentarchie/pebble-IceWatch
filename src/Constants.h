@@ -13,3 +13,4 @@
 #define KEY_ME_TEXTCOLOR 8
 
 #define BUZZER_INTERVAL 1500
+#define MAX_WIDTH 144

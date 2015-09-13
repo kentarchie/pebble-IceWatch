@@ -43,7 +43,7 @@ TextLayer* batterySetup()
 
 TextLayer* ICELabelSetup()
 {
-   TextLayer* labelLayer = makeTextLayer(mainWindow,0, 0, 144, 40,
+   TextLayer* labelLayer = makeTextLayer(mainWindow,0, 0, MAX_WIDTH, 40,
   		GColorWhite,GColorRed,
   		FONT_KEY_GOTHIC_28_BOLD,
   		GTextAlignmentCenter,
@@ -54,7 +54,7 @@ TextLayer* ICELabelSetup()
 
 TextLayer* ICENameSetup()
 {
-  TextLayer* nameLayer = makeTextLayer(mainWindow,0, 30, 144, 30,
+  TextLayer* nameLayer = makeTextLayer(mainWindow,0, 30, MAX_WIDTH, 30,
   		GColorWhite,GColorBlack,
   		FONT_KEY_ROBOTO_CONDENSED_21,
   		GTextAlignmentCenter,
@@ -65,7 +65,7 @@ TextLayer* ICENameSetup()
 
 TextLayer* ICEPhoneSetup()
 {
-  TextLayer* phoneLayer = makeTextLayer(mainWindow,0, 50, 144, 30,
+  TextLayer* phoneLayer = makeTextLayer(mainWindow,0, 50, MAX_WIDTH, 32,
   		GColorWhite,GColorBlack,
   		FONT_KEY_ROBOTO_CONDENSED_21,
   		GTextAlignmentCenter,
@@ -76,7 +76,7 @@ TextLayer* ICEPhoneSetup()
 
 TextLayer* meSetup()
 {
-  TextLayer* meLayer = makeTextLayer(mainWindow,0, 80, 140, 60,
+  TextLayer* meLayer = makeTextLayer(mainWindow,0, 72, MAX_WIDTH, 25,
   		GColorClear,GColorBlack,
   		FONT_KEY_GOTHIC_24_BOLD,
   		GTextAlignmentCenter,
@@ -87,7 +87,7 @@ TextLayer* meSetup()
 
 TextLayer* timeSetup()
 {
-  TextLayer* timeLayer = makeTextLayer(mainWindow,0, 100, 144, 50,
+  TextLayer* timeLayer = makeTextLayer(mainWindow,0, 85, MAX_WIDTH, 45,
   		GColorClear,GColorBlack,
   		FONT_KEY_BITHAM_42_BOLD,
   		GTextAlignmentCenter,
@@ -98,11 +98,12 @@ TextLayer* timeSetup()
 
 TextLayer* dateSetup()
 {
-  TextLayer* dateLayer = makeTextLayer(mainWindow,0, 140, 144, 50,
+  TextLayer* dateLayer = makeTextLayer(mainWindow,0, 125, MAX_WIDTH, 50,
   		GColorClear,GColorBlack,
-  		FONT_KEY_GOTHIC_24_BOLD,
+  		FONT_KEY_GOTHIC_18_BOLD,
   		GTextAlignmentCenter,
-  		"31 September 2015"
+  		"Tues. 31 September\n 2015"
   );
+  text_layer_set_overflow_mode(dateLayer,GTextOverflowModeTrailingEllipsis);
   return(dateLayer);
 } // dateSetup

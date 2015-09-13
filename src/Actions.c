@@ -25,9 +25,9 @@ void updateDate()
 {
   time_t temp = time(NULL); 
   struct tm *tickTime = localtime(&temp);
-  static char dateBuffer[] = "31 September 2015";
+  static char dateBuffer[] = "Wednesday 31 September 2015";
 
-  strftime(dateBuffer, sizeof(dateBuffer), "%e %B %Y", tickTime);
+  strftime(dateBuffer, sizeof(dateBuffer), "%a %e %B %n %Y", tickTime);
 
   // Display this time on the TextLayer
   text_layer_set_text(dateLayer, dateBuffer);

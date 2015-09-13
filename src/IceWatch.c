@@ -108,7 +108,7 @@ static void init()
 {
   // Create main Window element and assign to pointer
   mainWindow = window_create();
-  window_set_background_color(mainWindow, GColorTiffanyBlue);
+  window_set_background_color(mainWindow, GColorCeleste);
 
   // Set handlers to manage the elements inside the Window
   window_set_window_handlers(mainWindow, (WindowHandlers) {
