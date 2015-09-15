@@ -13,47 +13,36 @@ function logger(str)
 
 (function(){
 	clearLog();
-   logger('Ready to Zepto!')
    $("#b-cancel").click(cancelForm);
    $("#b-submit").click(sendForm);
-   logger("init called ");
 	loadOptions();
 })();
 
 function init()
 {
-   //logger("configPage: config page ready");
-
    $("#b-cancel").click(cancelForm);
    $("#b-submit").click(sendform);
 
    //Set form values to whatever is passed in.
-   logger("init called ");
 	loadOptions();
 } // init
 
 function loadOptions() {
-  var $backgroundColorPicker = $('#backgroundColorPicker');
-  var $timeFormatCheckbox = $('#timeFormatCheckbox');
-
   var storeString = JSON.stringify(localStorage);
-  //logger(storeString);
-  logger("Test Storage");
   logger( JSON.stringify(localStorage));
 
   if (localStorage.myName) {
   	  $('#myName').val(localStorage.myName);
-	  logger('myName=' + localStorage.myName);
   }
   if (localStorage.iceName) $('#iceName').val(localStorage.iceName);
   if (localStorage.icePhone) $('#icePhone').val(localStorage.icePhone);
-  logger('loadOptions: radiohour=:'+ localStorage.radioHour +':');
-  if (localStorage.radioHour) {
-	 $('#radioHour12').prop('checked',false);
-	 $('#radioHour14').prop('checked',false);
-  	 if(localStorage.radioHour == 12) $('#radioHour12').prop('checked',true);
-  	 if(localStorage.radioHour == 24) $('#radioHour24').prop('checked',true);
+  if (localStorage.hourFormat) {
+	 $('#hourFormat12').prop('checked',false);
+	 $('#hourFormat24').prop('checked',false);
+  	 if (localStorage.hourFormat == 12) $('#hourFormat12').prop('checked',true);
+  	 if (localStorage.hourFormat == 24) $('#hourFormat24').prop('checked',true);
   }
+
   if (localStorage.iceBackgroundColor) 
   		$('#iceBackgroundColor').val(localStorage.iceBackgroundColor);
   if (localStorage.iceTextColor) 
@@ -62,36 +51,44 @@ function loadOptions() {
   		$('#meBackgroundColor').val(localStorage.meBackgroundColor);
   if (localStorage.meTextColor) 
   		$('#meTextColor').val(localStorage.meTextColor);
+
+  if (localStorage.showBatteryStatus) 
+  		$('#showBatteryStatus').prop('checked', localStorage.showBatteryStatus == 'on');
+  if (localStorage.showBTStatus) 
+  		$('#showBTStatus').prop('checked', localStorage.showBTStatus == 'on');
 } // loadOptions
 
 function saveOptions()
 {
-   //logger("saveOptions called");
-   var radioVal = $('input[name="radioHour"]:checked').val();
-	logger('saveOptions: radiohour=:'+ radioVal +':');
+   var hourFormatVal = $('input[name="hourFormat"]:checked').val();
    var options = {
    	"iceName"  : $('#iceName').val()
    	,"icePhone" : $('#icePhone').val()
    	,"myName"   : $('#myName').val()
-		,"radioHour" : radioVal
+		,"hourFormat" : hourFormatVal
 		,"batteryON" : true
 		,"iceBackground" : $('#iceBackgroundColor').val()
 		,"iceTextColor" : $('#iceTextColor').val()
 		,"meBackground" : $('#meBackgroundColor').val()
 		,"meTextColor" : $('#meTextColor').val()
+		,"showBTStatus" : $('#showBTStatus').val()
+		,"showBatteryStatus" : $('#showBatteryStatus').val()
 	};
    logger("iceBackgroundColor = " +  $('#iceBackgroundColor').val());
+   logger("showBTStatus = " +  $('#showBTStatus').val());
 
    logger('saveOptions: options=:'+ JSON.stringify(options)+':');
 
    localStorage.myName = options.myName;
    localStorage.iceName = options.iceName;
    localStorage.icePhone = options.icePhone;
-   localStorage.radioHour = options.radioHour;
+   localStorage.hourFormat = options.hourFormat;
    localStorage.iceBackgroundColor = options.iceBackground;
    localStorage.iceTextColor = options.iceTextColor;
    localStorage.meBackgroundColor = options.meBackground;
-   localStorage.meTextColor = options.meBackground;
+   localStorage.meTextColor = options.meTextColor;
+   localStorage.showBTStatus = options.showBTStatus;
+   localStorage.showBatteryStatus = options.showBatteryStatus;
 
    return options;
 } // saveOptions
@@ -103,7 +100,7 @@ function sendForm()
 
    logger("options = " +  JSON.stringify(saveOptions()));
    var location = return_to + encodeURIComponent(JSON.stringify(saveOptions()));
-   logger("configPage: Warping to: " + location);
+   //logger("configPage: Warping to: " + location);
    document.location = location;
 } // sendForm
 

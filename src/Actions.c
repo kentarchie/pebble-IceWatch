@@ -1,7 +1,7 @@
 #include <pebble.h>
 #include "Constants.h"
 #include "Global.h"
-extern int hourFormat;
+extern int HourFormat;
 
 void updateTime() 
 {
@@ -9,7 +9,7 @@ void updateTime()
   struct tm *tickTime = localtime(&temp);
   static char timeBuffer[] = "00:00";
 
-  if (hourFormat == 24) {
+  if (HourFormat == 24) {
     strftime(timeBuffer, sizeof("00:00"), "%H:%M", tickTime);
   } else {
     strftime(timeBuffer, sizeof("00:00"), "%I:%M", tickTime);
@@ -37,29 +37,41 @@ void buzzer2()
 {
   app_timer_cancel( btBuzzerTimer);
   vibes_short_pulse();
-  //bitmap_layer_set_bitmap(btBitMap, bluetoothImageOff);
-  bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOff);
-  ConnectionLost = TRUE;
 } // buzzer2 
 
 void bluetoothHandler(bool connected) 
 {
-  if(connected) {
-     //APP_LOG(APP_LOG_LEVEL_DEBUG, "connected true");
-     //bitmap_layer_set_bitmap(btBitMap, bluetoothImageOn);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "bluetoothHandler: start connected :%s:",connected ? "true" : "false");
+  bool prevConnected=false;
+  if(persist_exists(BT_STATUS)){
+    prevConnected = persist_read_bool(BT_STATUS);
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "bluetoothHandler: initial key");
+  }
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "bluetoothHandler: prevConnected :%s:",prevConnected ? "true" : "false");
+
+  if(connected && prevConnected) {
      bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOn);
-     if(ConnectionLost == TRUE) {
-         vibes_short_pulse();
-         ConnectionLost = FALSE;
-     }    
+     APP_LOG(APP_LOG_LEVEL_DEBUG, "bluetoothHandler: both true turned on connection");
   }
-  else {
-     //APP_LOG(APP_LOG_LEVEL_DEBUG, "connected false");
-    if(ConnectionLost == FALSE) {
-       vibes_long_pulse();
-       btBuzzerTimer = app_timer_register(BUZZER_INTERVAL, buzzer2,NULL);
-    }
+  if(!connected && !prevConnected) {
+     bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOff);
+     APP_LOG(APP_LOG_LEVEL_DEBUG, "bluetoothHandler: both false turned off connection");
   }
+
+  if(connected && !prevConnected) {
+     bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOn);
+     APP_LOG(APP_LOG_LEVEL_DEBUG, "bluetoothHandler: turned on connection");
+     vibes_short_pulse();
+  }
+
+  if(!connected && prevConnected) {
+  	  bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOff);
+     APP_LOG(APP_LOG_LEVEL_DEBUG, "bluetoothHandler: turned off connection");
+     vibes_long_pulse();
+     btBuzzerTimer = app_timer_register(BUZZER_INTERVAL, buzzer2,NULL);
+  }
+  persist_write_bool(BT_STATUS, connected);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "bluetoothHandler: done saved :%s:",connected ? "true" : "false");
 } // bluetoothHandler
 
 void BatteryStatusOn() 

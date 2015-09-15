@@ -86,7 +86,7 @@
       <div class='item-container-header'>Customizability</div>
       <div class='item-container-content'>
         <label class='item'>
-          Your Section Background Color
+          Your Name Section Background Color
           <input id='meBackgroundColor' name='meBackgroundColor' type='text' class='item-color item-color-sunny' value='#FFFFFF' />
         </label>
       </div>
@@ -99,7 +99,7 @@
       <div class='item-container-header'>Customizability</div>
       <div class='item-container-content'>
         <label class='item'>
-          Your Section Text Color
+          Your Name Section Text Color
           <input id='meTextColor' name='meTextColor' type='text' class='item-color item-color-sunny' value='#000000' />
         </label>
       </div>
@@ -115,17 +115,44 @@
 	<tr>
            <td class='buttonCell'>
              <label class="item"> 12 Hour 
-             <input type="radio" class="myRadio " name='radioHour' id="radioHour12" value="12" checked />
+             <input type="radio" class="myRadio " name='hourFormat' id="hourFormat12" value="12" checked />
 	     </label>
 	   </td>
            <td class='buttonCell'>
              <label class="item"> 24 Hour 
-             <input type="radio" class="myRadio " name='radioHour' id="radioHour24" value="24" />
+             <input type="radio" class="myRadio " name='hourFormat' id="hourFormat24" value="24" />
 	     </label>
 	  </td>
 	</tr>
 	</table>
       </div>
+    </div>
+
+	 <div class='item-container'>
+      <div class='item-container-header'>Display Bluetooth Connection Status</div>
+      <div class='item-container-content'>
+        <label class='item'>
+          Bluetooth Connection Status
+          <input id='showBTStatus' name='showBTStatus' type='checkbox' class='item-toggle'>
+        </label>
+      </div>
+      <div class='item-container-footer'>
+		If on, this shows an icon indicating the Bluetooth connection status and buzzes
+		when it changes
+      </div>
+
+	 <div class='item-container'>
+      <div class='item-container-header'>Display Battery Status</div>
+      <div class='item-container-content'>
+        <label class='item'>
+          Battery Status
+          <input id='showBatteryStatus' name='showBatteryStatus' type='checkbox' class='item-toggle'>
+        </label>
+      </div>
+      <div class='item-container-footer'>
+		If on, this shows the remaining percentage of charge in the battery
+      </div>
+    </div>
     </div>
 
     <div class='item-container'>

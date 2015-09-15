@@ -25,9 +25,6 @@ function processConfig(e)
 {
   console.log("phoneSide: procssConfig: start");
   console.log('phoneSide: processConfig: response = :'+ e.response + ':');
-  //console.log('phoneSide: processConfig: charAt(0) = :'+ e.response.charAt(0) + ':');
-  //console.log('phoneSide: processConfig: slice(-1)(0) = :'+ e.response.slice(-1) + ':');
-  //console.log('phoneSide: processConfig: response.length = :'+ e.response.length + ':');
 
   var configData = JSON.parse(decodeURIComponent(e.response));
   console.log("phoneSide: processConfig: configData = " + JSON.stringify(configData));
@@ -36,11 +33,14 @@ function processConfig(e)
   watchData['KEY_CONTACT_NAME'] = 'Emergency Contact Name';
   watchData['KEY_CONTACT_PHONE'] = '123-555-1234';
   watchData['KEY_MY_NAME'] = 'My Name';
-  watchData['KEY_12OR24'] = 12;
+  watchData['KEY_HOUR_FORMAT'] = 12;
   watchData['KEY_ICE_BACKGROUND'] = '0x000000';
   watchData['KEY_ICE_TEXTCOLOR'] = '0xffffff'
   watchData['KEY_ME_BACKGROUND'] = '0x000000'
   watchData['KEY_ME_TEXTCOLOR'] = '0xffffff'
+  watchData['KEY_SHOW_BT'] = "on"
+  watchData['KEY_SHOW_BATTERY'] = "on"
+  watchData['KEY_BT_CONNECTION'] = true
 
   if ('iceName' in configData) 
   	 watchData['KEY_CONTACT_NAME']   =  configData.iceName;
@@ -51,8 +51,8 @@ function processConfig(e)
   if ('myName' in configData) 
   	 watchData['KEY_MY_NAME']    =  configData.myName;
 
-  if ('radioHour' in configData) 
-  	 watchData['KEY_12OR24'] =  parseInt(configData.radioHour);
+  if ('hourFormat' in configData) 
+  	 watchData['KEY_HOUR_FORMAT'] =  parseInt(configData.hourFormat);
 
   if ('iceBackground' in configData) {
 		var iceBack = configData['iceBackground'];
@@ -74,6 +74,16 @@ function processConfig(e)
   if ('meTextColor' in configData) {
 		var meText = configData['meTextColor'];
   		watchData['KEY_ME_TEXTCOLOR'] = parseInt(meText, 16);
+  }
+
+  if ('showBTStatus' in configData) {
+		var btStatus = configData['showBTStatus'];
+  		watchData['KEY_SHOW_BT'] = btStatus;
+  }
+
+  if ('showBatteryStatus' in configData) {
+		var batteryStatus = configData['showBatteryStatus'];
+  		watchData['KEY_SHOW_BATTERY'] = batteryStatus;
   }
 
   console.log('phoneSide: processConfig: watchData setup: ' + JSON.stringify(watchData));

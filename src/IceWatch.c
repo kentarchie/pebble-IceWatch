@@ -19,24 +19,19 @@ TextLayer *batteryLayer;
 GBitmap *bluetoothImageOn,*bluetoothImageOff;
 BitmapLayer *bluetoothLayer;
 
-int ConnectionLost;
 AppTimer * btBuzzerTimer;
-int hourFormat = 24;
+int HourFormat = 24;
 
 static void inbox_received_handler(DictionaryIterator *iter, void *context) 
 {
    APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: received message");
 	//logDictionary(iter);
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: after dict print");
 	processContactName(iter, context);
 	processContactPhone(iter, context);
 	processMyName(iter, context);
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: processed Name");
 	processRadioHour(iter, context);
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: processed radioHour");
 	processBatteryStatus(iter, context);
 
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: starting colors");
 	processICEBackground(iter, context); 
 	processICETextColor(iter, context); 
 	processMeBackground(iter, context);
@@ -58,16 +53,15 @@ static void loadSettings()
 	loadSettingsTextColor(KEY_ICE_TEXTCOLOR,ICENameLayer,GColorBlackARGB8);
 	loadSettingsTextColor(KEY_ICE_TEXTCOLOR,ICEPhoneLayer,GColorBlackARGB8);
 
-	hourFormat = loadSettingsInt(KEY_12OR24,12);
+	HourFormat = loadSettingsInt(KEY_HOUR_FORMAT,12);
 	updateTime();
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch loadSettings: hourFormat=%d",hourFormat);
-	int batteryOn = loadSettingsBoolean(KEY_BATTERY_ON,FALSE);
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch loadSettings: HourFormat=%d",HourFormat);
+	int batteryOn = loadSettingsBoolean(KEY_SHOW_BATTERY,false);
    APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch loadSettings: batteryOn=%d",batteryOn);
 } // loadSettings
 
 static void mainWindowLoad(Window *window)
 {
-  ConnectionLost=FALSE;
   btBuzzerTimer = NULL;
   bluetoothImageOn  = gbitmap_create_with_resource(RESOURCE_ID_bluetoothOn);
   bluetoothImageOff = gbitmap_create_with_resource(RESOURCE_ID_bluetoothOff);
@@ -94,6 +88,13 @@ static void mainWindowUnload(Window *window)
 {
   // Destroy TextLayer
   text_layer_destroy(timeLayer);
+  text_layer_destroy(ICELabelLayer);
+  text_layer_destroy(ICENameLayer);
+  text_layer_destroy(ICEPhoneLayer);
+  text_layer_destroy(myNameLayer);
+  text_layer_destroy(dateLayer);
+  text_layer_destroy(batteryLayer);
+
   tick_timer_service_unsubscribe();
   bluetooth_connection_service_unsubscribe();
 } // mainWindowUnload
@@ -126,7 +127,6 @@ static void init()
 
   app_message_register_inbox_received(inbox_received_handler);
   app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
-
 } // init
 
 static void deinit()
