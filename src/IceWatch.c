@@ -56,8 +56,8 @@ static void loadSettings()
 	HourFormat = loadSettingsInt(KEY_HOUR_FORMAT,12);
 	updateTime();
    APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch loadSettings: HourFormat=%d",HourFormat);
-	int batteryOn = loadSettingsBoolean(KEY_SHOW_BATTERY,false);
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch loadSettings: batteryOn=%d",batteryOn);
+	bool batteryOn = loadSettingsBoolean(KEY_SHOW_BATTERY,false);
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch loadSettings: batteryOn=%s",batteryOn ? "true" : "false");
 } // loadSettings
 
 static void mainWindowLoad(Window *window)
@@ -75,6 +75,13 @@ static void mainWindowLoad(Window *window)
   bluetoothLayer = connectionSetup();
   batteryLayer = batterySetup();
 
+  if(persist_exists(KEY_SHOW_BATTERY)){
+  		bool value = persist_read_bool(KEY_SHOW_BATTERY);
+		if (!value) {
+			layer_set_hidden((Layer *) batteryLayer, true);
+		}
+			layer_set_hidden((Layer *) batteryLayer, false);
+  }
   loadSettings();
    
   // Make sure the time is displayed from the start

@@ -12,7 +12,7 @@ void updateTime()
   if (HourFormat == 24) {
     strftime(timeBuffer, sizeof("00:00"), "%H:%M", tickTime);
   } else {
-    strftime(timeBuffer, sizeof("00:00"), "%I:%M", tickTime);
+    strftime(timeBuffer, sizeof("00:00"), "%l:%M", tickTime);
   }
 
   // Write the current hours and minutes into the buffer
@@ -86,8 +86,14 @@ void BatteryStatusOff()
 
 void handleBattery(BatteryChargeState charge_state)
 {
-  static char battery_text[] = "100%";
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "handleBattery start");
+	static char battery_text[] = "100%";
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "handleBattery start");
+	if(persist_exists(KEY_SHOW_BATTERY)){
+  		bool value = persist_read_bool(KEY_SHOW_BATTERY);
+		if (!value) {
+			return;
+		}
+	}
 
   if (charge_state.is_charging) {
     snprintf(battery_text, sizeof(battery_text), "chg");

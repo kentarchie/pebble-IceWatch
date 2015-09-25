@@ -29,7 +29,7 @@ function init()
 
 function loadOptions() {
   var storeString = JSON.stringify(localStorage);
-  logger( JSON.stringify(localStorage));
+  //logger( JSON.stringify(localStorage));
 
   if (localStorage.myName) {
   	  $('#myName').val(localStorage.myName);
@@ -53,9 +53,9 @@ function loadOptions() {
   		$('#meTextColor').val(localStorage.meTextColor);
 
   if (localStorage.showBatteryStatus) 
-  		$('#showBatteryStatus').prop('checked', localStorage.showBatteryStatus == 'on');
+  		$('#showBatteryStatus').attr('checked', localStorage.showBatteryStatus == 'true');
   if (localStorage.showBTStatus) 
-  		$('#showBTStatus').prop('checked', localStorage.showBTStatus == 'on');
+  		$('#showBTStatus').attr('checked', localStorage.showBTStatus == 'true');
 } // loadOptions
 
 function saveOptions()
@@ -71,13 +71,16 @@ function saveOptions()
 		,"iceTextColor" : $('#iceTextColor').val()
 		,"meBackground" : $('#meBackgroundColor').val()
 		,"meTextColor" : $('#meTextColor').val()
-		,"showBTStatus" : $('#showBTStatus').val()
-		,"showBatteryStatus" : $('#showBatteryStatus').val()
+		,"showBTStatus" : $('#showBTStatus').attr('checked'()
+		,"showBatteryStatus" : $('#showBatteryStatus').attr('checked')
 	};
-   logger("iceBackgroundColor = " +  $('#iceBackgroundColor').val());
-   logger("showBTStatus = " +  $('#showBTStatus').val());
+   //logger("iceBackgroundColor = " +  $('#iceBackgroundColor').val());
+   logger("showBTStatus = " +  $('#showBTStatus').attr('checked'));
+   //logger("showBatteryStatus.val = " +  $('#showBatteryStatus').val());
+   //logger("showBatteryStatus.checked = " +  $('#showBatteryStatus').checked);
+   logger("showBatteryStatus.attr = " +  $('#showBatteryStatus').attr('checked'));
 
-   logger('saveOptions: options=:'+ JSON.stringify(options)+':');
+   //logger('saveOptions: options=:'+ JSON.stringify(options)+':');
 
    localStorage.myName = options.myName;
    localStorage.iceName = options.iceName;
@@ -98,7 +101,7 @@ function sendForm()
    //logger("configPage: Submit clicked");
 	var return_to = getQueryParam('return_to', 'pebblejs://close#');
 
-   logger("options = " +  JSON.stringify(saveOptions()));
+   //logger("options = " +  JSON.stringify(saveOptions()));
    var location = return_to + encodeURIComponent(JSON.stringify(saveOptions()));
    //logger("configPage: Warping to: " + location);
    document.location = location;
@@ -107,7 +110,8 @@ function sendForm()
 function cancelForm()
 {
    //logger("configPage: Cancel clicked");
-   document.location = "pebblejs://close";
+	saveOptions();
+   //document.location = "pebblejs://close";
 } // cancelForm
 
 function getQueryParam(variable, defaultValue) {

@@ -28,7 +28,7 @@ void processContactName(DictionaryIterator *iter, void *context)
 	}
 
    if(tuple->value->cstring) contactName = tuple->value->cstring;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: contactName 1=:%s:",contactName);
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: contactName =:%s:",contactName);
 
    // save new value if changed
    if((contactName != NULL) && (strcmp(contactName,"Name") != 0)) {
@@ -110,21 +110,22 @@ void processRadioHour(DictionaryIterator *iter, void *context)
 
 void processBatteryStatus(DictionaryIterator *iter, void *context) 
 {
-   int batteryStatus = -1;
+   char * batteryStatus = NULL;
    Tuple *tuple = dict_find(iter, KEY_SHOW_BATTERY);
 	if(!tuple) return;
 
-   if(tuple->value->int8) batteryStatus = tuple->value->int8;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: batteryStatus =:%d:",batteryStatus);
+   if(tuple->value->cstring) batteryStatus = tuple->value->cstring;
+   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: batteryStatus =:%s:",batteryStatus);
 
    // save new value if changed
-   if(batteryStatus != -1) {
-     persist_write_int(KEY_SHOW_BATTERY, batteryStatus); // Persist value
-	  if(batteryStatus)
+   if(batteryStatus != NULL) {
+     persist_write_bool(KEY_SHOW_BATTERY, strcmp(batteryStatus,"on") == 0); // Persist value
+	  if(strcmp(batteryStatus,"on") == 0)
 	  	 BatteryStatusOn();
 	  else
 	  	 BatteryStatusOff();
-   } else {
+   } 
+	else {
      APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: batteryStatus missing");
    }
 } // processBatteryStatus
@@ -243,7 +244,7 @@ int loadSettingsInt(int key,int defaultValue)
 	return(value);
 } // loadSettingsInt
 
-int loadSettingsBoolean(int key,bool defaultValue) 
+bool loadSettingsBoolean(int key,bool defaultValue) 
 {
 	bool value = defaultValue;
    APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: loading Boolean settings");
