@@ -1,6 +1,7 @@
 #include <pebble.h>
 #include "Constants.h"
 #include "Global.h"
+#include "SetupDisplay.h"
 extern int HourFormat;
 
 void updateTime() 
@@ -101,4 +102,5 @@ void handleBattery(BatteryChargeState charge_state)
     snprintf(battery_text, sizeof(battery_text), "%d%%", charge_state.charge_percent);
   }
   text_layer_set_text(batteryLayer, battery_text);
+  printMemory("batteryCheck");
 } //handleBattery

@@ -106,3 +106,8 @@ TextLayer* dateSetup()
   text_layer_set_overflow_mode(dateLayer,GTextOverflowModeTrailingEllipsis);
   return(dateLayer);
 } // dateSetup
+
+void printMemory(char * where)
+{
+	APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch memory: (%s) used=%d free=%d",where,heap_bytes_used(),heap_bytes_free());
+} // printMemory

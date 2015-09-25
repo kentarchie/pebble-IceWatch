@@ -89,6 +89,7 @@ static void mainWindowLoad(Window *window)
   handleBattery(battery_state_service_peek());
   updateDate();
   bluetoothHandler(bluetooth_connection_service_peek());
+  printMemory("mainWindowLoad");
 } // mainWindowLoad
 
 static void mainWindowUnload(Window *window)
@@ -101,8 +102,10 @@ static void mainWindowUnload(Window *window)
   text_layer_destroy(myNameLayer);
   text_layer_destroy(dateLayer);
   text_layer_destroy(batteryLayer);
+  bitmap_layer_destroy(bluetoothLayer);
 
   tick_timer_service_unsubscribe();
+  printMemory("mainWindowUnLoad");
   bluetooth_connection_service_unsubscribe();
 } // mainWindowUnload
 
