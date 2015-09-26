@@ -2,14 +2,17 @@
 #include "Constants.h"
 #include "Global.h"
 #include "Actions.h"
-extern int HourFormat;
+#include "Utilities.h"
 
+extern int HourFormat;
+char DebugStr[DEBUG_SIZE];
 
 void setBackgroundColor(int color,TextLayer * layer)
 {
   GColor background_color = GColorFromHEX(color);
   text_layer_set_background_color(layer, background_color);
-  APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: setBackgroundColor: value=:%#06x:",color);
+  snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: setBackgroundColor: value=:%#06x:",color);
+  printMemory( DebugStr, false);
 } // setBackgroundColor
 
 void setTextColor(int color,TextLayer * layer)
@@ -23,19 +26,20 @@ void processContactName(DictionaryIterator *iter, void *context)
    char * contactName = "Name";
    Tuple *tuple = dict_find(iter, KEY_CONTACT_NAME);
 	if(!tuple) {
-   	APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: ProcessContactName: no contact name");
+	   printMemory( "ICEWatch: ProcessContactName: no contact name" , false);
 		return;
 	}
 
    if(tuple->value->cstring) contactName = tuple->value->cstring;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: contactName =:%s:",contactName);
+	snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: contactName =:%s:",contactName);
+	printMemory( DebugStr, false);
 
    // save new value if changed
    if((contactName != NULL) && (strcmp(contactName,"Name") != 0)) {
      persist_write_string(KEY_CONTACT_NAME, contactName); // Persist value
   	  text_layer_set_text(myNameLayer, contactName);  // set display
    } else {
-     APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: contactName missing");
+	  printMemory( "ICEWatch: contactName missing" , false);
    }
 } // processContactName
 
@@ -44,19 +48,20 @@ void processContactPhone(DictionaryIterator *iter, void *context)
    char * contactPhone = "Phone";
    Tuple *tuple = dict_find(iter, KEY_CONTACT_PHONE);
 	if(!tuple) {
-   	APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: no contact phone");
+		printMemory( "ICEWatch: no contact phone" , false);
 		return;
 	}
 
    if(tuple->value->cstring) contactPhone = tuple->value->cstring;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: contactPhone =:%s:",contactPhone);
+	snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: contactPhone =:%s:",contactPhone);
+	printMemory( DebugStr, false);
 
    // save new value if changed
    if((contactPhone != NULL) && (strcmp(contactPhone,"Phone") != 0)) {
      persist_write_string(KEY_CONTACT_PHONE, contactPhone); // Persist value
   	  text_layer_set_text(myNameLayer, contactPhone);  // set display
    } else {
-     APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: contactPhone missing");
+	  printMemory( "ICEWatch: contactPhone missing" , false);
    }
 } // processContactName
 
@@ -65,19 +70,20 @@ void processMyName(DictionaryIterator *iter, void *context)
    char * myName = "Name";
    Tuple *tuple = dict_find(iter, KEY_MY_NAME);
 	if(!tuple) {
-   	APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: no my name");
+	   printMemory( "ICEWatch: no my name" , false);
 		return;
 	}
 
    if(tuple->value->cstring) myName = tuple->value->cstring;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: myName =:%s:",myName);
+	snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: myName =:%s:",myName);
+	printMemory( DebugStr, false);
 
    // save new value if changed
    if((myName != NULL) && (strcmp(myName,"Name") != 0)) {
      persist_write_string(KEY_MY_NAME, myName); // Persist value
   	  text_layer_set_text(myNameLayer, myName);  // set display
    } else {
-     APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: myName missing");
+	  printMemory( "ICEWatch: myName missing" , false);
    }
 } // processMyName
 
@@ -86,7 +92,7 @@ void processRadioHour(DictionaryIterator *iter, void *context)
    int hourFormat = -1;
    Tuple *tuple = dict_find(iter, KEY_HOUR_FORMAT);
 	if(!tuple) {
-   	APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: no radio hour:");
+		printMemory( "ICEWatch: no radio hour:" , false);
 		return;
 	}
 
@@ -94,9 +100,10 @@ void processRadioHour(DictionaryIterator *iter, void *context)
 		hourFormat = tuple->value->int8;
 	}
 	else
-   	APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: hourFormat no tuple->value:");
+		printMemory( "ICEWatch: hourFormat no tuple->value:" , false);
 
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: hourFormat =:%d:",hourFormat);
+	snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: hourFormat =:%d:",hourFormat);
+	printMemory( DebugStr, false);
 
    // save new value if changed
    if(hourFormat != -1) {
@@ -104,7 +111,7 @@ void processRadioHour(DictionaryIterator *iter, void *context)
 	  HourFormat=hourFormat;
 	  updateTime();
    } else {
-     APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: hourFormat missing");
+	  printMemory( "ICEWatch: hourFormat missing" , false);
    }
 } // processRadioHour
 
@@ -115,7 +122,8 @@ void processBatteryStatus(DictionaryIterator *iter, void *context)
 	if(!tuple) return;
 
    if(tuple->value->cstring) batteryStatus = tuple->value->cstring;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: batteryStatus =:%s:",batteryStatus);
+	snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: batteryStatus =:%s:",batteryStatus);
+	printMemory( DebugStr, false);
 
    // save new value if changed
    if(batteryStatus != NULL) {
@@ -126,7 +134,7 @@ void processBatteryStatus(DictionaryIterator *iter, void *context)
 	  	 BatteryStatusOff();
    } 
 	else {
-     APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: batteryStatus missing");
+	  printMemory( "ICEWatch: batteryStatus missing" , false);
    }
 } // processBatteryStatus
 
@@ -135,12 +143,13 @@ void processICEBackground(DictionaryIterator *iter, void *context)
    int iceBackground = 0;
    Tuple *tuple = dict_find(iter, KEY_ICE_BACKGROUND);
 	if(!tuple) {
-   	APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: processICEBackground: no tuple iceBackground");
+	   printMemory( "ICEWatch: processICEBackground: no tuple iceBackground" , false);
 		return;
 	}
 
    if(tuple->value->int32) iceBackground = tuple->value->int32;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: processICEBackground: iceBackground =:%#06x:",iceBackground);
+	snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: processICEBackground: iceBackground =:%#06x:",iceBackground);
+	printMemory( DebugStr, false);
 
    // save new value if changed
    if(iceBackground != 0) {
@@ -149,7 +158,7 @@ void processICEBackground(DictionaryIterator *iter, void *context)
      setBackgroundColor(iceBackground,ICEPhoneLayer);
    } 
 	else {
-     APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: processICEBackground: iceBackground missing");
+	  printMemory( "ICEWatch: processICEBackground: iceBackground missing" , false);
    }
 } // processICEBackground
 
@@ -160,7 +169,8 @@ void processICETextColor(DictionaryIterator *iter, void *context)
 	if(!tuple) return;
 
    if(tuple->value->int32) iceTextColor = tuple->value->int32;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: iceTextColor =:%#06x:",iceTextColor);
+	snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: iceTextColor =:%#06x:",iceTextColor);
+	printMemory( DebugStr, false);
 
    // save new value if changed
    persist_write_int(KEY_ICE_TEXTCOLOR, iceTextColor); // Persist value
@@ -175,7 +185,8 @@ void processMeBackground(DictionaryIterator *iter, void *context)
 	if(!tuple) return;
 
    if(tuple->value->int32) meBackground = tuple->value->int32;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: meBackground =:%#06x:",meBackground);
+	snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: meBackground =:%#06x:",meBackground);
+	printMemory( DebugStr, false);
 
    persist_write_int(KEY_ME_BACKGROUND, meBackground); // Persist value
    setBackgroundColor(meBackground,myNameLayer);
@@ -188,7 +199,8 @@ void processMeTextColor(DictionaryIterator *iter, void *context)
 	if(!tuple) return;
 
    if(tuple->value->int32) meTextColor = tuple->value->int32;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: meTextColor =:%#06x:",meTextColor);
+	snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: meTextColor =:%#06x:",meTextColor);
+	printMemory( DebugStr, false);
 
    persist_write_int(KEY_ME_TEXTCOLOR, meTextColor); // Persist value
    setTextColor(meTextColor,myNameLayer);
@@ -197,13 +209,14 @@ void processMeTextColor(DictionaryIterator *iter, void *context)
 void loadSettingsText(int key,TextLayer * layer,char * defaultValue) 
 {
 	char * stringBuffer;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: loading text settings");
+	printMemory( "ICEWatch: loading text settings" , false);
 	if(persist_exists(key)){
 		int strSize = persist_get_size(key);
 		if((stringBuffer = malloc(strSize)) != NULL){
 			int actualSize = persist_read_string(key, stringBuffer, strSize);
   	  		text_layer_set_text(layer, stringBuffer);
-      	APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: loadText: key=:%d:, value =:%s:",key,stringBuffer);
+			snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: loadText: key=:%d:, value =:%s:",key,stringBuffer);
+			printMemory( DebugStr, false);
 		}
 		else {
   	  		text_layer_set_text(layer, defaultValue);
@@ -214,89 +227,47 @@ void loadSettingsText(int key,TextLayer * layer,char * defaultValue)
 void loadSettingsBackground(int key,TextLayer * layer,int defaultValue) 
 {
 	int backgroundColor = defaultValue;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: loading backgroundColor settings");
+	printMemory( "ICEWatch: loading backgroundColor settings" , false);
 	if(persist_exists(key)){
       backgroundColor = persist_read_int(key);
       setBackgroundColor(backgroundColor,layer);
 	}
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: text key=:%d: backgroundColor=%#06x",key,backgroundColor);
+	snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: text key=:%d: backgroundColor=%#06x",key,backgroundColor);
+	printMemory( DebugStr, false);
 } // loadSettingsBackground
 
 void loadSettingsTextColor(int key,TextLayer * layer,int defaultValue) 
 {
 	int textColor = defaultValue;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: loading textColor settings");
+	printMemory( "ICEWatch: loading textColor settings" , false);
 	if(persist_exists(key)){
       textColor = persist_read_int(key);
       setTextColor(textColor,layer);
 	}
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: key=:%d: textColor=%#06x",key,textColor);
+	snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: key=:%d: textColor=%#06x",key,textColor);
+	printMemory( DebugStr, false);
 } // loadSettingsTextColor
 
 int loadSettingsInt(int key,int defaultValue) 
 {
 	int value = defaultValue;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: loading int settings");
+	printMemory( "ICEWatch: loading int settings" , false);
 	if(persist_exists(key)){
       value = persist_read_int(key);
 	}
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: key=:%d: int value=%d",key,value);
+	snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: key=:%d: int value=%d",key,value);
+	printMemory( DebugStr, false);
 	return(value);
 } // loadSettingsInt
 
 bool loadSettingsBoolean(int key,bool defaultValue) 
 {
 	bool value = defaultValue;
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: loading Boolean settings");
+	printMemory( "ICEWatch: loading Boolean settings" , false);
 	if(persist_exists(key)){
   		value = persist_read_bool(key);
 	}
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: key=:%d: bool value=%s",key,value ? "true" : "false");
+	snprintf(DebugStr,DEBUG_SIZE, "ICEWatch: key=:%d: bool value=%s",key,value ? "true" : "false");
+	printMemory( DebugStr, false);
 	return(value);
 } // loadSettingsBoolean
-
-void logDictionary( DictionaryIterator *iter)
-{
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"WatchSide: Dictionary: START");
-	uint8_t buffer[2048];
-	uint32_t currentSize =  dict_size(iter);
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"WatchSide: Dictionary: size=:%d:",(int) currentSize);
-	Tuple *tuple = dict_read_begin_from_buffer(iter, buffer, currentSize);
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"WatchSide: Dictionary: after tuple start");
-	while (tuple) {
-   	APP_LOG(APP_LOG_LEVEL_DEBUG,"WatchSide: Dictionary: in loop key=:%d:",(int)tuple->key);
-  	switch (tuple->key) {
-    	case KEY_CONTACT_NAME :
-   		APP_LOG(APP_LOG_LEVEL_DEBUG,"WatchSide: Dictionary: NAME value=:%s:",tuple->value->cstring);
-      	break;
-		case KEY_CONTACT_PHONE:
-   		APP_LOG(APP_LOG_LEVEL_DEBUG,"WatchSide: Dictionary: PHONE value=:%s:",tuple->value->cstring);
-      	break;
-		case KEY_MY_NAME:
-   		APP_LOG(APP_LOG_LEVEL_DEBUG,"WatchSide: Dictionary: MYNAME value=:%s:",tuple->value->cstring);
-      	break;
-		case KEY_HOUR_FORMAT:
-   		APP_LOG(APP_LOG_LEVEL_DEBUG,"WatchSide: Dictionary: 12OR24 value=:%d:",(int)tuple->value->int8);
-      	break;
-		case KEY_SHOW_BATTERY:
-   		APP_LOG(APP_LOG_LEVEL_DEBUG,"WatchSide: Dictionary: BATTERY value=:%d:",(int)tuple->value->int8);
-      	break;
-		case KEY_ICE_BACKGROUND:
-   		APP_LOG(APP_LOG_LEVEL_DEBUG,"WatchSide: Dictionary: ICEBACK value=:%d:",(int)tuple->value->int8);
-      	break;
-		case KEY_ICE_TEXTCOLOR:
-   		APP_LOG(APP_LOG_LEVEL_DEBUG,"WatchSide: Dictionary: ICETEXT value=:%d:",(int)tuple->value->int8);
-      	break;
-		case KEY_ME_BACKGROUND:
-   		APP_LOG(APP_LOG_LEVEL_DEBUG,"WatchSide: Dictionary: MEBACK value=:%d:",(int)tuple->value->int8);
-      	break;
-		case KEY_ME_TEXTCOLOR:
-   		APP_LOG(APP_LOG_LEVEL_DEBUG,"WatchSide: Dictionary: METEXT value=:%d:",(int)tuple->value->int8);
-      	break;
-		default:
-   		APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch: logDictionary: undefined key=%d",(int)tuple->key);
-      	break;
-  	} // esac
-  	tuple = dict_read_next(iter);
-	}
-} // logDictionary

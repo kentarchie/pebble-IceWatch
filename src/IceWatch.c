@@ -1,4 +1,5 @@
 #include <pebble.h>
+#include <string.h>
 // bluetooth code taken from classio-battery-connection example code
 // battery status code taken from classio-battery-connection example code
   
@@ -6,6 +7,7 @@
 #include "SetupDisplay.h"
 #include "Actions.h"
 #include "ConfigHandlers.h"
+#include "Utilities.h"
 
 Window *mainWindow;
 TextLayer *ICELabelLayer;
@@ -21,10 +23,11 @@ BitmapLayer *bluetoothLayer;
 
 AppTimer * btBuzzerTimer;
 int HourFormat = 24;
+char DebugStr[DEBUG_SIZE];
 
 static void inbox_received_handler(DictionaryIterator *iter, void *context) 
 {
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: received message");
+	printMemory( "ICEWatch inbox_handler: received message" , false);
 	//logDictionary(iter);
 	processContactName(iter, context);
 	processContactPhone(iter, context);
@@ -36,7 +39,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context)
 	processICETextColor(iter, context); 
 	processMeBackground(iter, context);
 	processMeTextColor(iter, context);
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch inbox_handler: DONE");
+	printMemory( "ICEWatch inbox_handler: DONE" , false);
 } // inbox_received_handler
 
 static void loadSettings() 
@@ -55,9 +58,11 @@ static void loadSettings()
 
 	HourFormat = loadSettingsInt(KEY_HOUR_FORMAT,12);
 	updateTime();
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch loadSettings: HourFormat=%d",HourFormat);
+	snprintf(DebugStr,DEBUG_SIZE,"ICEWatch loadSettings: HourFormat=%d",HourFormat);
+	printMemory( DebugStr , false);
 	bool batteryOn = loadSettingsBoolean(KEY_SHOW_BATTERY,false);
-   APP_LOG(APP_LOG_LEVEL_DEBUG,"ICEWatch loadSettings: batteryOn=%s",batteryOn ? "true" : "false");
+	snprintf(DebugStr,DEBUG_SIZE,"ICEWatch loadSettings: batteryOn=%s",batteryOn ? "true" : "false");
+	printMemory( DebugStr, false);
 } // loadSettings
 
 static void mainWindowLoad(Window *window)
@@ -89,7 +94,7 @@ static void mainWindowLoad(Window *window)
   handleBattery(battery_state_service_peek());
   updateDate();
   bluetoothHandler(bluetooth_connection_service_peek());
-  printMemory("mainWindowLoad");
+  printMemory("mainWindowLoad",false);
 } // mainWindowLoad
 
 static void mainWindowUnload(Window *window)
@@ -105,7 +110,7 @@ static void mainWindowUnload(Window *window)
   bitmap_layer_destroy(bluetoothLayer);
 
   tick_timer_service_unsubscribe();
-  printMemory("mainWindowUnLoad");
+  printMemory("mainWindowUnLoad",false);
   bluetooth_connection_service_unsubscribe();
 } // mainWindowUnload
 

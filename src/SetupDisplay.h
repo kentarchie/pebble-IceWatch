@@ -6,4 +6,3 @@ TextLayer* meSetup();
 TextLayer* timeSetup();
 TextLayer* dateSetup();
 TextLayer* batterySetup();
-void printMemory(char *);
