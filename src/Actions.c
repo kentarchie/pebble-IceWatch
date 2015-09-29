@@ -4,7 +4,6 @@
 #include "Utilities.h"
 
 extern int HourFormat;
-char DebugStr[DEBUG_SIZE];
 
 void updateTime() 
 {
@@ -44,56 +43,53 @@ void buzzer2()
 
 void bluetoothHandler(bool connected) 
 {
-  snprintf(DebugStr,DEBUG_SIZE, "bluetoothHandler: start connected :%s:",connected ? "true" : "false");
-  printMemory( DebugStr, false);
+	APP_LOG(DebugLevel, "bluetoothHandler: start connected :%s:",connected ? "true" : "false");
   bool prevConnected=false;
   if(persist_exists(BT_STATUS)){
     prevConnected = persist_read_bool(BT_STATUS);
-	 printMemory( "bluetoothHandler: initial key" , false);
+	APP_LOG(DebugLevel, "bluetoothHandler: initial key");
   }
-  snprintf(DebugStr,DEBUG_SIZE, "bluetoothHandler: prevConnected :%s:",prevConnected ? "true" : "false");
-  printMemory( DebugStr, false);
+	APP_LOG(DebugLevel, "bluetoothHandler: prevConnected :%s:",prevConnected ? "true" : "false");
 
   if(connected && prevConnected) {
      bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOn);
-	  printMemory( "bluetoothHandler: both true turned on connection" , false);
+	  APP_LOG(DebugLevel, "bluetoothHandler: both true turned on connection");
   }
   if(!connected && !prevConnected) {
      bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOff);
-	  printMemory( "bluetoothHandler: both false turned off connection" , false);
+	  APP_LOG(DebugLevel, "bluetoothHandler: both false turned off connection");
   }
 
   if(connected && !prevConnected) {
      bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOn);
-	  printMemory( "bluetoothHandler: turned on connection" , false);
+	  APP_LOG(DebugLevel, "bluetoothHandler: turned on connection");
      vibes_short_pulse();
   }
 
   if(!connected && prevConnected) {
   	  bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOff);
-	  printMemory( "bluetoothHandler: turned off connection" , false);
+	  APP_LOG(DebugLevel, "bluetoothHandler: turned off connection");
      vibes_long_pulse();
      btBuzzerTimer = app_timer_register(BUZZER_INTERVAL, buzzer2,NULL);
   }
   persist_write_bool(BT_STATUS, connected);
-  snprintf(DebugStr,DEBUG_SIZE,"bluetoothHandler: done saved :%s:",connected ? "true" : "false");
-  printMemory( DebugStr, false);
+  APP_LOG(DebugLevel, "bluetoothHandler: done saved :%s:",connected ? "true" : "false");
 } // bluetoothHandler
 
 void BatteryStatusOn() 
 {
-	printMemory( "BatteryStatusOn" , false);
+	APP_LOG(DebugLevel, "BatteryStatusOn");
 } // BatteryStatusOn 
 
 void BatteryStatusOff() 
 {
-	printMemory( "BatteryStatusOff" , false);
+	APP_LOG(DebugLevel, "BatteryStatusOff");
 } // BatteryStatusOff 
 
 void handleBattery(BatteryChargeState charge_state)
 {
 	static char battery_text[] = "100%";
-	printMemory( "handleBattery start" , false);
+	APP_LOG(DebugLevel, "handleBattery start");
 	if(persist_exists(KEY_SHOW_BATTERY)){
   		bool value = persist_read_bool(KEY_SHOW_BATTERY);
 		if (!value) {
@@ -107,5 +103,5 @@ void handleBattery(BatteryChargeState charge_state)
     snprintf(battery_text, sizeof(battery_text), "%d%%", charge_state.charge_percent);
   }
   text_layer_set_text(batteryLayer, battery_text);
-  printMemory("batteryCheck",false);
+  APP_LOG(DebugLevel, "batteryCheck");
 } //handleBattery

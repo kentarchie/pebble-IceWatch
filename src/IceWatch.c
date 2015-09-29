@@ -17,18 +17,17 @@ TextLayer *myNameLayer;
 TextLayer *timeLayer;
 TextLayer *dateLayer;
 TextLayer *batteryLayer;
+bool DebugLevel=APP_LOG_LEVEL_DEBUG;
 
 GBitmap *bluetoothImageOn,*bluetoothImageOff;
 BitmapLayer *bluetoothLayer;
 
 AppTimer * btBuzzerTimer;
 int HourFormat = 24;
-char DebugStr[DEBUG_SIZE];
 
 static void inbox_received_handler(DictionaryIterator *iter, void *context) 
 {
-	printMemory( "ICEWatch inbox_handler: received message" , false);
-	//logDictionary(iter);
+	APP_LOG(DebugLevel, "ICEWatch inbox_handler: received message");
 	processContactName(iter, context);
 	processContactPhone(iter, context);
 	processMyName(iter, context);
@@ -39,7 +38,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context)
 	processICETextColor(iter, context); 
 	processMeBackground(iter, context);
 	processMeTextColor(iter, context);
-	printMemory( "ICEWatch inbox_handler: DONE" , false);
+	APP_LOG(DebugLevel, "ICEWatch inbox_handler: DONE");
 } // inbox_received_handler
 
 static void loadSettings() 
@@ -58,11 +57,11 @@ static void loadSettings()
 
 	HourFormat = loadSettingsInt(KEY_HOUR_FORMAT,12);
 	updateTime();
-	snprintf(DebugStr,DEBUG_SIZE,"ICEWatch loadSettings: HourFormat=%d",HourFormat);
-	printMemory( DebugStr , false);
+	APP_LOG(DebugLevel,"ICEWatch loadSettings: HourFormat=%d",HourFormat);
+
 	bool batteryOn = loadSettingsBoolean(KEY_SHOW_BATTERY,false);
-	snprintf(DebugStr,DEBUG_SIZE,"ICEWatch loadSettings: batteryOn=%s",batteryOn ? "true" : "false");
-	printMemory( DebugStr, false);
+	APP_LOG(DebugLevel, "ICEWatch loadSettings: batteryOn=%s",batteryOn ? "true" : "false");
+	printMemory("loadSettings done");
 } // loadSettings
 
 static void mainWindowLoad(Window *window)
@@ -94,7 +93,7 @@ static void mainWindowLoad(Window *window)
   handleBattery(battery_state_service_peek());
   updateDate();
   bluetoothHandler(bluetooth_connection_service_peek());
-  printMemory("mainWindowLoad",false);
+  APP_LOG(DebugLevel, "mainWindowLoad");
 } // mainWindowLoad
 
 static void mainWindowUnload(Window *window)
@@ -110,7 +109,7 @@ static void mainWindowUnload(Window *window)
   bitmap_layer_destroy(bluetoothLayer);
 
   tick_timer_service_unsubscribe();
-  printMemory("mainWindowUnLoad",false);
+	APP_LOG(DebugLevel, "mainWindowUnLoad");
   bluetooth_connection_service_unsubscribe();
 } // mainWindowUnload
 

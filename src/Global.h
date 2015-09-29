@@ -10,3 +10,4 @@ extern GBitmap *bluetoothImageOn;
 extern GBitmap *bluetoothImageOff;
 extern BitmapLayer *bluetoothLayer;
 extern AppTimer *btBuzzerTimer;
+extern bool DebugLevel;
