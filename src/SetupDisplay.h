@@ -6,3 +6,5 @@ TextLayer* meSetup();
 TextLayer* timeSetup();
 TextLayer* dateSetup();
 TextLayer* batterySetup();
+void processLayers();
+void loadLayers();

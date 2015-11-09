@@ -2,8 +2,10 @@
 #include "Constants.h"
 #include "Global.h"
 #include "Utilities.h"
+#include "Layers.h"
 
 extern int HourFormat;
+extern Layer Layers[];
 
 void updateTime() 
 {
@@ -20,7 +22,9 @@ void updateTime()
   // Write the current hours and minutes into the buffer
 
   // Display this time on the TextLayer
-  text_layer_set_text(timeLayer, timeBuffer);
+  APP_LOG(DebugLevel, "updateTime: setting text");
+  text_layer_set_text(GET_LAYER(TIME_LAYER), timeBuffer);
+  APP_LOG(DebugLevel, "updateTime: text set");
 } // updateTime
 
 void updateDate() 
@@ -32,7 +36,7 @@ void updateDate()
   strftime(dateBuffer, sizeof(dateBuffer), "%a %e %B %n %Y", tickTime);
 
   // Display this time on the TextLayer
-  text_layer_set_text(dateLayer, dateBuffer);
+  text_layer_set_text(GET_LAYER(DATE_LAYER), dateBuffer);
 } // updateDate
 
 void buzzer2() 
@@ -43,7 +47,7 @@ void buzzer2()
 
 void bluetoothHandler(bool connected) 
 {
-	APP_LOG(DebugLevel, "bluetoothHandler: start connected :%s:",connected ? "true" : "false");
+  APP_LOG(DebugLevel, "bluetoothHandler: start connected :%s:",connected ? "true" : "false");
   bool prevConnected=false;
   if(persist_exists(BT_STATUS)){
     prevConnected = persist_read_bool(BT_STATUS);
@@ -52,22 +56,22 @@ void bluetoothHandler(bool connected)
 	APP_LOG(DebugLevel, "bluetoothHandler: prevConnected :%s:",prevConnected ? "true" : "false");
 
   if(connected && prevConnected) {
-     bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOn);
+     bitmap_layer_set_bitmap(GET_LAYER(BLUETOOTH_LAYER), bluetoothImageOn);
 	  APP_LOG(DebugLevel, "bluetoothHandler: both true turned on connection");
   }
   if(!connected && !prevConnected) {
-     bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOff);
+     bitmap_layer_set_bitmap(GET_LAYER(BLUETOOTH_LAYER), bluetoothImageOff);
 	  APP_LOG(DebugLevel, "bluetoothHandler: both false turned off connection");
   }
 
   if(connected && !prevConnected) {
-     bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOn);
+     bitmap_layer_set_bitmap(GET_LAYER(BLUETOOTH_LAYER), bluetoothImageOn);
 	  APP_LOG(DebugLevel, "bluetoothHandler: turned on connection");
      vibes_short_pulse();
   }
 
   if(!connected && prevConnected) {
-  	  bitmap_layer_set_bitmap(bluetoothLayer, bluetoothImageOff);
+  	  bitmap_layer_set_bitmap(GET_LAYER(BLUETOOTH_LAYER), bluetoothImageOff);
 	  APP_LOG(DebugLevel, "bluetoothHandler: turned off connection");
      vibes_long_pulse();
      btBuzzerTimer = app_timer_register(BUZZER_INTERVAL, buzzer2,NULL);
@@ -102,6 +106,6 @@ void handleBattery(BatteryChargeState charge_state)
   } else {
     snprintf(battery_text, sizeof(battery_text), "%d%%", charge_state.charge_percent);
   }
-  text_layer_set_text(batteryLayer, battery_text);
+  text_layer_set_text(GET_LAYER(BATTERY_LAYER), battery_text);
   APP_LOG(DebugLevel, "batteryCheck");
 } //handleBattery

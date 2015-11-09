@@ -3,8 +3,10 @@
 #include "Global.h"
 #include "Actions.h"
 #include "Utilities.h"
+#include "Layers.h"
 
 extern int HourFormat;
+extern Layer Layers[];
 
 void setBackgroundColor(int color,TextLayer * layer)
 {
@@ -34,7 +36,7 @@ void processContactName(DictionaryIterator *iter, void *context)
    // save new value if changed
    if((contactName != NULL) && (strcmp(contactName,"Name") != 0)) {
      persist_write_string(KEY_CONTACT_NAME, contactName); // Persist value
-  	  text_layer_set_text(myNameLayer, contactName);  // set display
+  	  text_layer_set_text(GET_LAYER(ICE_NAME_LAYER), contactName);  // set display
    } else {
 		APP_LOG(DebugLevel, "ICEWatch: contactName missing");
    }
@@ -55,7 +57,7 @@ void processContactPhone(DictionaryIterator *iter, void *context)
    // save new value if changed
    if((contactPhone != NULL) && (strcmp(contactPhone,"Phone") != 0)) {
      persist_write_string(KEY_CONTACT_PHONE, contactPhone); // Persist value
-  	  text_layer_set_text(myNameLayer, contactPhone);  // set display
+  	  text_layer_set_text(GET_LAYER(ICE_PHONE_LAYER), contactPhone);  // set display
    } else {
 	  APP_LOG(DebugLevel, "ICEWatch: contactPhone missing");
    }
@@ -76,7 +78,7 @@ void processMyName(DictionaryIterator *iter, void *context)
    // save new value if changed
    if((myName != NULL) && (strcmp(myName,"Name") != 0)) {
      persist_write_string(KEY_MY_NAME, myName); // Persist value
-  	  text_layer_set_text(myNameLayer, myName);  // set display
+  	  text_layer_set_text(GET_LAYER(ME_NAME_LAYER), myName);  // set display
    } else {
 	  APP_LOG(DebugLevel, "ICEWatch: myName missing");
    }
@@ -146,8 +148,8 @@ void processICEBackground(DictionaryIterator *iter, void *context)
    // save new value if changed
    if(iceBackground != 0) {
      persist_write_int(KEY_ICE_BACKGROUND, iceBackground); // Persist value
-     setBackgroundColor(iceBackground,ICENameLayer);
-     setBackgroundColor(iceBackground,ICEPhoneLayer);
+     setBackgroundColor(iceBackground,GET_LAYER(ICE_NAME_LAYER));
+     setBackgroundColor(iceBackground,GET_LAYER(ICE_PHONE_LAYER));
    } 
 	else {
 	  APP_LOG(DebugLevel, "ICEWatch: processICEBackground: iceBackground missing");
@@ -165,8 +167,8 @@ void processICETextColor(DictionaryIterator *iter, void *context)
 
    // save new value if changed
    persist_write_int(KEY_ICE_TEXTCOLOR, iceTextColor); // Persist value
-   setTextColor(iceTextColor,ICENameLayer);
-   setTextColor(iceTextColor,ICEPhoneLayer);
+   setTextColor(iceTextColor,GET_LAYER(ICE_NAME_LAYER));
+   setTextColor(iceTextColor,GET_LAYER(ICE_PHONE_LAYER));
 } // processICETextColor
 
 void processMeBackground(DictionaryIterator *iter, void *context) 
@@ -179,7 +181,7 @@ void processMeBackground(DictionaryIterator *iter, void *context)
 	APP_LOG(DebugLevel, "ICEWatch: meBackground =:%#06x:",meBackground);
 
    persist_write_int(KEY_ME_BACKGROUND, meBackground); // Persist value
-   setBackgroundColor(meBackground,myNameLayer);
+   setBackgroundColor(meBackground,GET_LAYER(ME_NAME_LAYER));
 } // processMeBackground
 
 void processMeTextColor(DictionaryIterator *iter, void *context) 
@@ -192,13 +194,12 @@ void processMeTextColor(DictionaryIterator *iter, void *context)
 	APP_LOG(DebugLevel, "ICEWatch: meTextColor =:%#06x:",meTextColor);
 
    persist_write_int(KEY_ME_TEXTCOLOR, meTextColor); // Persist value
-   setTextColor(meTextColor,myNameLayer);
+   setTextColor(meTextColor,GET_LAYER(ME_NAME_LAYER));
 } // processMeTextColor
 
 void loadSettingsText(int key,TextLayer * layer,char * defaultValue) 
 {
 	char * stringBuffer;
-	APP_LOG(DebugLevel, "ICEWatch: loading text settings");
 	if(persist_exists(key)){
 		int strSize = persist_get_size(key);
 		if((stringBuffer = malloc(strSize)) != NULL){
@@ -215,7 +216,6 @@ void loadSettingsText(int key,TextLayer * layer,char * defaultValue)
 void loadSettingsBackground(int key,TextLayer * layer,int defaultValue) 
 {
 	int backgroundColor = defaultValue;
-	APP_LOG(DebugLevel, "ICEWatch: loading backgroundColor settings");
 	if(persist_exists(key)){
       backgroundColor = persist_read_int(key);
       setBackgroundColor(backgroundColor,layer);
@@ -226,7 +226,6 @@ void loadSettingsBackground(int key,TextLayer * layer,int defaultValue)
 void loadSettingsTextColor(int key,TextLayer * layer,int defaultValue) 
 {
 	int textColor = defaultValue;
-	APP_LOG(DebugLevel, "ICEWatch: loading textColor settings");
 	if(persist_exists(key)){
       textColor = persist_read_int(key);
       setTextColor(textColor,layer);
@@ -237,7 +236,6 @@ void loadSettingsTextColor(int key,TextLayer * layer,int defaultValue)
 int loadSettingsInt(int key,int defaultValue) 
 {
 	int value = defaultValue;
-	APP_LOG(DebugLevel, "ICEWatch: loading int settings");
 	if(persist_exists(key)){
       value = persist_read_int(key);
 	}
@@ -248,7 +246,6 @@ int loadSettingsInt(int key,int defaultValue)
 bool loadSettingsBoolean(int key,bool defaultValue) 
 {
 	bool value = defaultValue;
-	APP_LOG(DebugLevel, "ICEWatch: loading Boolean settings");
 	if(persist_exists(key)){
   		value = persist_read_bool(key);
 	}

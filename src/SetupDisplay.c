@@ -2,6 +2,154 @@
 #include "Constants.h"
 #include "Global.h"
 #include "Utilities.h"
+#include "Layers.h"
+extern Layer Layers[];
+
+void loadLayers()
+{
+	Layers[ICE_LABEL_LAYER] = (Layer) { 
+	.name = "ICELayer",
+	.type = "text",
+	.layer = NULL,
+	.xpos = 0,
+	.ypos = 0,
+	.width = MAX_WIDTH,
+	.height = 40,
+	.currentText = "ICE",
+	.defaultText = "ICE",
+	.currentImage = NULL,
+	.defaultImage = NULL,
+	.backgroundColor = GColorWhite,
+	.textColor = GColorRed,
+	.font = FONT_KEY_GOTHIC_28_BOLD,
+	.align = GTextAlignmentCenter
+	};
+
+	Layers[ICE_NAME_LAYER] = (Layer) { 
+	.name = "ICEName",
+	.type = "text",
+	.layer = NULL,
+	.xpos = 0,
+	.ypos = 30,
+	.width = MAX_WIDTH,
+	.height = 30,
+	.currentText = "ICE",
+	.defaultText = "Contact Name",
+	.currentImage = NULL,
+	.defaultImage = NULL,
+	.backgroundColor = GColorWhite,
+	.textColor = GColorBlack,
+	.font = FONT_KEY_ROBOTO_CONDENSED_21,
+	.align = GTextAlignmentCenter
+	};
+
+	Layers[ICE_PHONE_LAYER] = (Layer) { 
+	.name = "ICEPhone",
+	.type = "text",
+	.layer = NULL,
+	.xpos = 0,
+	.ypos = 50,
+	.width = MAX_WIDTH,
+	.height = 32,
+	.currentText = "",
+	.defaultText = "000-555-1234",
+	.currentImage = NULL,
+	.defaultImage = NULL,
+	.backgroundColor = GColorWhite,
+	.textColor = GColorBlack,
+	.font = FONT_KEY_ROBOTO_CONDENSED_21,
+	.align = GTextAlignmentCenter
+	};
+
+	Layers[ME_NAME_LAYER] = (Layer) { 
+	.name = "MeName",
+	.type = "text",
+	.layer = NULL,
+	.xpos = 0,
+	.ypos = 72,
+	.width = MAX_WIDTH,
+	.height = 25,
+	.currentText = "",
+	.defaultText = "My Name",
+	.currentImage = NULL,
+	.defaultImage = NULL,
+	.backgroundColor = GColorWhite,
+	.textColor = GColorBlack,
+	.font = FONT_KEY_ROBOTO_CONDENSED_21,
+	.align = GTextAlignmentCenter
+	};
+
+	Layers[TIME_LAYER] = (Layer) { 
+	.name = "timeLayer",
+	.type = "text",
+	.layer = NULL,
+	.xpos = 0,
+	.ypos = 85,
+	.width = MAX_WIDTH,
+	.height = 45,
+	.currentText = "",
+	.defaultText = "00:00",
+	.currentImage = NULL,
+	.defaultImage = NULL,
+	.backgroundColor = GColorClear,
+	.textColor = GColorBlack,
+	.font = FONT_KEY_BITHAM_42_BOLD,
+	.align = GTextAlignmentCenter
+	};
+
+	Layers[DATE_LAYER] = (Layer) { 
+	.name = "dateLayer",
+	.type = "text",
+	.layer = NULL,
+	.xpos = 0,
+	.ypos = 125,
+	.width = MAX_WIDTH,
+	.height = 50,
+	.currentText = "",
+	.defaultText = "Tues. 31 September\n 2015",
+	.currentImage = NULL,
+	.defaultImage = NULL,
+	.backgroundColor = GColorClear,
+	.textColor = GColorBlack,
+	.font = FONT_KEY_GOTHIC_18_BOLD,
+	.align = GTextAlignmentCenter
+	};
+
+	Layers[BATTERY_LAYER] = (Layer) { 
+	.name = "batteryLayer",
+	.type = "text",
+	.layer = NULL,
+	.xpos = 100,
+	.ypos = 0,
+	.width = 50,
+	.height = 25,
+	.currentText = "",
+	.defaultText = "100%",
+	.currentImage = NULL,
+	.defaultImage = NULL,
+	.textColor = GColorBlue,
+	.font = FONT_KEY_GOTHIC_24,
+	.align = GTextAlignmentCenter
+	};
+
+	Layers[BLUETOOTH_LAYER] = (Layer) { 
+	.name = "btLayer",
+	.type = "bitmap",
+	.layer = NULL,
+	.xpos = 0,
+	.ypos = 0,
+	.width = 32,
+	.height = 32,
+	.currentText = "",
+	.defaultText = "",
+	.currentImage = gbitmap_create_with_resource(RESOURCE_ID_bluetoothOn),
+	.defaultImage = gbitmap_create_with_resource(RESOURCE_ID_bluetoothOn),
+	.backgroundColor = GColorWhite,
+	.textColor = GColorBlue,
+	.font = FONT_KEY_GOTHIC_24,
+	.align = GTextAlignmentCenter
+	};
+} //loadLayers
 
 TextLayer * makeTextLayer( Window * win
 											 ,int x, int y
@@ -12,6 +160,7 @@ TextLayer * makeTextLayer( Window * win
                                   ,GTextAlignment alignment
 				  							 ,char * initialText)
 {
+  APP_LOG(DebugLevel, "ICEWatch makeTextLayer: START");
   TextLayer *newLayer = text_layer_create(GRect(x, y, width, height));
   text_layer_set_background_color(newLayer, backgroundColor);
   text_layer_set_text_color(newLayer, textColor);
@@ -22,88 +171,26 @@ TextLayer * makeTextLayer( Window * win
   return(newLayer);
 } // makeTextLayer
 
-BitmapLayer* connectionSetup()
+void processLayers()
 {
-   BitmapLayer* btLayer = bitmap_layer_create(GRect(0, 0, 32, 32));
+  APP_LOG(DebugLevel, "ICEWatch processLayers: START");
+   for (int layer = 0; layer< LAYERCOUNT; ++layer) {
+      APP_LOG(DebugLevel, "ICEWatch working on layer (%d) type=%s",layer,Layers[layer].type);
+      if(strcmp(Layers[layer].type , "text") == 0) {
+         APP_LOG(DebugLevel, "ICEWatch making textLayer (%d)",layer);
+         Layers[layer].layer =  makeTextLayer(mainWindow
+                ,Layers[layer].xpos, Layers[layer].ypos, Layers[layer].width, Layers[layer].height,
+  		          Layers[layer].backgroundColor,Layers[layer].textColor,
+		          Layers[layer].font, Layers[layer].align, Layers[layer].defaultText
+         );
+      }
 
-   layer_add_child(window_get_root_layer(mainWindow), bitmap_layer_get_layer(btLayer));
-	return(btLayer);
-} // connectionSetup
+      if(strcmp(Layers[layer].type , "bitmap") == 0) {
+         APP_LOG(DebugLevel, "ICEWatch making bitmapLayer (%d)",layer);
+         Layers[layer].layer =  bitmap_layer_create(GRect(Layers[layer].xpos, Layers[layer].ypos, Layers[layer].width, Layers[layer].height));
+         layer_add_child(window_get_root_layer(mainWindow), bitmap_layer_get_layer(Layers[layer].layer));
+      }
+   } // for
+  APP_LOG(DebugLevel, "ICEWatch processLayers: DONE");
+} // processLayers
 
-TextLayer* batterySetup()
-{
-   TextLayer* batLayer = makeTextLayer(mainWindow,100, 0, 50, 25,
-  		GColorWhite,GColorBlue,
-		FONT_KEY_GOTHIC_24,
-  		GTextAlignmentCenter,
-  		"100%"
-   );
-  return(batLayer);
-} // batterySetup
-
-TextLayer* ICELabelSetup()
-{
-   TextLayer* labelLayer = makeTextLayer(mainWindow,0, 0, MAX_WIDTH, 40,
-  		GColorWhite,GColorRed,
-  		FONT_KEY_GOTHIC_28_BOLD,
-  		GTextAlignmentCenter,
-  		"ICE"
-   );
-  return(labelLayer);
-} // ICELabelSetup
-
-TextLayer* ICENameSetup()
-{
-  TextLayer* nameLayer = makeTextLayer(mainWindow,0, 30, MAX_WIDTH, 30,
-  		GColorWhite,GColorBlack,
-  		FONT_KEY_ROBOTO_CONDENSED_21,
-  		GTextAlignmentCenter,
-  		"Contact Name"
-  );
-  return(nameLayer);
-} // ICENameSetup
-
-TextLayer* ICEPhoneSetup()
-{
-  TextLayer* phoneLayer = makeTextLayer(mainWindow,0, 50, MAX_WIDTH, 32,
-  		GColorWhite,GColorBlack,
-  		FONT_KEY_ROBOTO_CONDENSED_21,
-  		GTextAlignmentCenter,
-  		"000-555-1234"
-  );
-  return(phoneLayer);
-} // ICEPhoneSetup
-
-TextLayer* meSetup()
-{
-  TextLayer* meLayer = makeTextLayer(mainWindow,0, 72, MAX_WIDTH, 25,
-  		GColorClear,GColorBlack,
-  		FONT_KEY_GOTHIC_24_BOLD,
-  		GTextAlignmentCenter,
-  		"My Name"
-  );
-  return(meLayer);
-} // meSetup
-
-TextLayer* timeSetup()
-{
-  TextLayer* timeLayer = makeTextLayer(mainWindow,0, 85, MAX_WIDTH, 45,
-  		GColorClear,GColorBlack,
-  		FONT_KEY_BITHAM_42_BOLD,
-  		GTextAlignmentCenter,
-  		"00:00"
-  );
-  return(timeLayer);
-} // timeSetup
-
-TextLayer* dateSetup()
-{
-  TextLayer* dateLayer = makeTextLayer(mainWindow,0, 125, MAX_WIDTH, 50,
-  		GColorClear,GColorBlack,
-  		FONT_KEY_GOTHIC_18_BOLD,
-  		GTextAlignmentCenter,
-  		"Tues. 31 September\n 2015"
-  );
-  text_layer_set_overflow_mode(dateLayer,GTextOverflowModeTrailingEllipsis);
-  return(dateLayer);
-} // dateSetup
