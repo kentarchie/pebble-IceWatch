@@ -2,6 +2,9 @@
 # Ignore build generated files
 build
 
+# stuff not to be saved
+attic
+
 # Ignore waf lock file
 .lock-waf*
 *.swp*

@@ -22,9 +22,9 @@ void updateTime()
   // Write the current hours and minutes into the buffer
 
   // Display this time on the TextLayer
-  APP_LOG(DebugLevel, "updateTime: setting text");
+  //APP_LOG(DebugLevel, "updateTime: setting text");
   text_layer_set_text(GET_LAYER(TIME_LAYER), timeBuffer);
-  APP_LOG(DebugLevel, "updateTime: text set");
+  //APP_LOG(DebugLevel, "updateTime: text set");
 } // updateTime
 
 void updateDate() 
@@ -93,7 +93,7 @@ void BatteryStatusOff()
 void handleBattery(BatteryChargeState charge_state)
 {
 	static char battery_text[] = "100%";
-	APP_LOG(DebugLevel, "handleBattery start");
+	//APP_LOG(DebugLevel, "handleBattery start");
 	if(persist_exists(KEY_SHOW_BATTERY)){
   		bool value = persist_read_bool(KEY_SHOW_BATTERY);
 		if (!value) {
@@ -107,5 +107,5 @@ void handleBattery(BatteryChargeState charge_state)
     snprintf(battery_text, sizeof(battery_text), "%d%%", charge_state.charge_percent);
   }
   text_layer_set_text(GET_LAYER(BATTERY_LAYER), battery_text);
-  APP_LOG(DebugLevel, "batteryCheck");
+  //APP_LOG(DebugLevel, "batteryCheck");
 } //handleBattery
