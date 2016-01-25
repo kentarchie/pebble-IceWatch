@@ -115,21 +115,21 @@ void processBatteryStatus(DictionaryIterator *iter, void *context)
 {
    char * batteryStatus = NULL;
    Tuple *tuple = dict_find(iter, KEY_SHOW_BATTERY);
-	if(!tuple) return;
+   if(!tuple) return;
 
    if(tuple->value->cstring) batteryStatus = tuple->value->cstring;
-	APP_LOG(DebugLevel, "ICEWatch: batteryStatus =:%s:",batteryStatus);
+   APP_LOG(DebugLevel, "ICEWatch: batteryStatus =:%s:",(batteryStatus == NULL) ? "NULL" : batteryStatus);
 
    // save new value if changed
    if(batteryStatus != NULL) {
      persist_write_bool(KEY_SHOW_BATTERY, strcmp(batteryStatus,"on") == 0); // Persist value
-	  if(strcmp(batteryStatus,"on") == 0)
-	  	 BatteryStatusOn();
-	  else
-	  	 BatteryStatusOff();
+     if(strcmp(batteryStatus,"on") == 0)
+	BatteryStatusOn();
+     else
+	BatteryStatusOff();
    } 
-	else {
-	  APP_LOG(DebugLevel, "ICEWatch: batteryStatus missing");
+   else {
+	APP_LOG(DebugLevel, "ICEWatch: batteryStatus missing");
    }
 } // processBatteryStatus
 

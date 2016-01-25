@@ -112,6 +112,6 @@ function ProcessConfig(e)
     }
   );
   console.log('phoneSide: ProcessConfig: sendAppMessage completed:');
-  window.localStorage.putItem('IceWatch',JSON.stringify(IceWatchOptions)); // safe config data
+  window.localStorage.putItem('IceWatch',JSON.stringify(configData)); // save config data
   console.log('phoneSide: ProcessConfig: after localstorage set: done:');
 } // ProcessConfig

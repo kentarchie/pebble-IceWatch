@@ -1,3 +1,5 @@
+var IW = require('./js/defs');   // data fields names
+var Defs = IW.IceWatchDefs;
 $().ready(init);
 
 function clearLog()
@@ -8,19 +10,13 @@ function clearLog()
 function logger(str)
 {
   var oldStr = $('#logger').html();
-  $('#logger').html(oldStr + '<hr />' + str);
+  $('#logger').html('config: ' + oldStr + '<hr />' + str);
 } // logger
-
-(function(){
-   clearLog();
-   $('#b-cancel').click(cancelForm);
-   $('#b-submit').click(sendForm);
-   loadOptions();
-})();
 
 function init()
 {
    logger('init start');
+   logger('init: Defs=:'+typeof Defs+':');
    $('#b-cancel').click(cancelForm);
    $('#b-submit').click(sendForm);
 
@@ -30,34 +26,34 @@ function init()
 
 function loadOptions() {
   var storeString = JSON.stringify(localStorage);
-  //logger( JSON.stringify(localStorage));
+  logger('loadOptions storeString=:'+storeString+':');
   logger('loadOptions start');
 
-  if (localStorage[IceWatchDefs.ConfigMyName]) {
-        $('#myName').val(localStorage[IceWatchDefs.ConfigMyName]);
+  if (localStorage[Defs.ConfigMyName]) {
+        $('#myName').val(localStorage[Defs.ConfigMyName]);
   }
-  if (localStorage[IceWatchDefs.ConfigIceName]) $('#iceName').val(localStorage[IceWatchDefs.ConfigIceName]);
-  if (localStorage[IceWatchDefs.ConfigIcePhone]) $('#icePhone').val(localStorage[IceWatchDefs.ConfigIcePhone]);
-  if (localStorage[IceWatchDefs.ConfigHourFormat]) {
+  if (localStorage[Defs.ConfigIceName]) $('#iceName').val(localStorage[Defs.ConfigIceName]);
+  if (localStorage[Defs.ConfigIcePhone]) $('#icePhone').val(localStorage[Defs.ConfigIcePhone]);
+  if (localStorage[Defs.ConfigHourFormat]) {
      $('#hourFormat12').prop('checked',false);
      $('#hourFormat24').prop('checked',false);
-       if (localStorage[IceWatchDefs.ConfigHourFormat] == 12) $('#hourFormat12').prop('checked',true);
-       if (localStorage[IceWatchDefs.ConfigHourFormat] == 24) $('#hourFormat24').prop('checked',true);
+     if (localStorage[Defs.ConfigHourFormat] == 12) $('#hourFormat12').prop('checked',true);
+     if (localStorage[Defs.ConfigHourFormat] == 24) $('#hourFormat24').prop('checked',true);
   }
 
-  if (localStorage[IceWatchDefs.ConfigIceBackground]) 
-          $('#iceBackgroundColor').val(localStorage[IceWatchDefs.ConfigIceBackground]);
-  if (localStorage[IceWatchDefs.ConfigIceTextColor]) 
-          $('#iceTextColor').val(localStorage[IceWatchDefs.ConfigIceTextColor]);
-  if (localStorage[IceWatchDefs.ConfigMeBackground]) 
-          $('#meBackgroundColor').val(localStorage[IceWatchDefs.ConfigMeBackground]);
-  if (localStorage[IceWatchDefs.ConfigMeTextColor]) 
-          $('#meTextColor').val(localStorage[IceWatchDefs.ConfigMeTextColor]);
+  if (localStorage[Defs.ConfigIceBackground]) 
+          $('#iceBackgroundColor').val(localStorage[Defs.ConfigIceBackground]);
+  if (localStorage[Defs.ConfigIceTextColor]) 
+          $('#iceTextColor').val(localStorage[Defs.ConfigIceTextColor]);
+  if (localStorage[Defs.ConfigMeBackground]) 
+          $('#meBackgroundColor').val(localStorage[Defs.ConfigMeBackground]);
+  if (localStorage[Defs.ConfigMeTextColor]) 
+          $('#meTextColor').val(localStorage[Defs.ConfigMeTextColor]);
 
-  if (localStorage[IceWatchDefs.ConfigShowBattery]) 
-          $('#showBatteryStatus').attr('checked', localStorage[IceWatchDefs.ConfigShowBattery] == 'true');
-  if (localStorage[IceWatchDefs.ConfigShowBT]) 
-          $('#showBTStatus').attr('checked', localStorage[IceWatchDefs.ConfigShowBT] == 'true');
+  if (localStorage[Defs.ConfigShowBattery]) 
+          $('#showBatteryStatus').prop('checked', localStorage[Defs.ConfigShowBattery] == 'true');
+  if (localStorage[Defs.ConfigShowBT]) 
+          $('#showBTStatus').prop('checked', localStorage[Defs.ConfigShowBT] == 'true');
 } // loadOptions
 
 function saveOptions()
@@ -84,16 +80,16 @@ function saveOptions()
 
    //logger('saveOptions: options=:'+ JSON.stringify(options)+':');
 
-   localStorage[IceWatchDefs.ConfigMyName]        = options[IceWatchDefs.ConfigMyName];
-   localStorage[IceWatchDefs.ConfigIceName]       = options[IceWatchDefs.ConfigIceName];
-   localStorage[IceWatchDefs.ConfigIcePhone]      = options[IceWatchDefs.ConfigIcePhone];
-   localStorage[IceWatchDefs.ConfigHourFormat]    = options[IceWatchDefs.ConfigHourFormat];
-   localStorage[IceWatchDefs.ConfigIceBackground] = options[IceWatchDefs.ConfigIceBackground];
-   localStorage[IceWatchDefs.ConfigIceTextColor]  = options[IceWatchDefs.ConfigIceTextColor];
-   localStorage[IceWatchDefs.ConfigMeBackground]  = options[IceWatchDefs.ConfigMeBackground];
-   localStorage[IceWatchDefs.ConfigMeTextColor]   = options[IceWatchDefs.ConfigMeTextColor];
-   localStorage[IceWatchDefs.ConfigShowBT]        = options[IceWatchDefs.ConfigShowBT];
-   localStorage[IceWatchDefs.ConfigShowBattery]   = options[IceWatchDefs.ConfigShowBattery];
+   localStorage[Defs.ConfigMyName]        = options[Defs.ConfigMyName];
+   localStorage[Defs.ConfigIceName]       = options[Defs.ConfigIceName];
+   localStorage[Defs.ConfigIcePhone]      = options[Defs.ConfigIcePhone];
+   localStorage[Defs.ConfigHourFormat]    = options[Defs.ConfigHourFormat];
+   localStorage[Defs.ConfigIceBackground] = options[Defs.ConfigIceBackground];
+   localStorage[Defs.ConfigIceTextColor]  = options[Defs.ConfigIceTextColor];
+   localStorage[Defs.ConfigMeBackground]  = options[Defs.ConfigMeBackground];
+   localStorage[Defs.ConfigMeTextColor]   = options[Defs.ConfigMeTextColor];
+   localStorage[Defs.ConfigShowBT]        = options[Defs.ConfigShowBT];
+   localStorage[Defs.ConfigShowBattery]   = options[Defs.ConfigShowBattery];
 
    return options;
 } // saveOptions

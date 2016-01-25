@@ -83,11 +83,13 @@ void bluetoothHandler(bool connected)
 void BatteryStatusOn() 
 {
 	APP_LOG(DebugLevel, "BatteryStatusOn");
+	layer_set_hidden(GET_LAYER(BATTERY_LAYER), false);
 } // BatteryStatusOn 
 
 void BatteryStatusOff() 
 {
 	APP_LOG(DebugLevel, "BatteryStatusOff");
+	layer_set_hidden(GET_LAYER(BATTERY_LAYER), true);
 } // BatteryStatusOff 
 
 void handleBattery(BatteryChargeState charge_state)
