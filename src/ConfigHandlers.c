@@ -117,7 +117,11 @@ void processBatteryStatus(DictionaryIterator *iter, void *context)
    Tuple *tuple = dict_find(iter, KEY_SHOW_BATTERY);
    if(!tuple) return;
 
-   if(tuple->value->cstring) batteryStatus = tuple->value->cstring;
+   if(tuple->value->cstring) {
+   	APP_LOG(DebugLevel, "ICEWatch: batteryStatus set to string");
+	batteryStatus = tuple->value->cstring;
+   }
+
    APP_LOG(DebugLevel, "ICEWatch: batteryStatus =:%s:",(batteryStatus == NULL) ? "NULL" : batteryStatus);
 
    // save new value if changed

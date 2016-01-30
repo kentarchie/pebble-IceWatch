@@ -3,4 +3,5 @@ tabe css/config.css
 tabe ../src/js/app/index.js
 tabe ../src/js/app/defs.js
 tabe ../wscript
+tabe ../appinfo.json
 tabe ../README.md

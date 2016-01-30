@@ -78,21 +78,7 @@ static void mainWindowLoad(Window *window)
   btBuzzerTimer = NULL;
   bluetoothImageOn  = gbitmap_create_with_resource(RESOURCE_ID_bluetoothOn);
   bluetoothImageOff = gbitmap_create_with_resource(RESOURCE_ID_bluetoothOff);
-
   
-  /*
-  APP_LOG(DebugLevel, "ICEWatch mainWindowLoad: before layers");
-  ICELabelLayer = ICELabelSetup();
-  ICENameLayer = ICENameSetup();
-  ICEPhoneLayer = ICEPhoneSetup();
-  myNameLayer = meSetup();
-  timeLayer = timeSetup();
-  dateLayer = dateSetup();
-  bluetoothLayer = connectionSetup();
-  batteryLayer = batterySetup();
-  APP_LOG(DebugLevel, "ICEWatch mainWindowLoad: after layers");
-  */
-
   loadLayers();
   processLayers();
   APP_LOG(DebugLevel, "ICEWatch mainWindowLoad: after processLayers");

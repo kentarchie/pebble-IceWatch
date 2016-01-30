@@ -24,7 +24,8 @@
     ,"KEY_ICE_TEXTCOLOR"  : 6
     ,"KEY_ME_BACKGROUND"  : 7
     ,"KEY_ME_TEXTCOLOR"   : 8
-    ,"KEY_SHOW_BT"        : 9
+    ,"KEY_BT_CONNECTION"  : 9
+    ,"KEY_SHOW_BT"  	  : 10
   },
 
   "resources": {

@@ -45,17 +45,17 @@ function ProcessConfig(e)
   console.log('phoneSide: ProcessConfig: configData = ' + JSON.stringify(configData));
   var watchData = {};
   // default config settings
-  watchData[Defs.WatchIceName] 	= 'Emergency Contact Name';
+  watchData[Defs.WatchIceName] 		= 'Emergency Contact Name';
   watchData[Defs.WatchIcePhone] 	= '123-555-1234';
-  watchData[Defs.WatchMyName] 	= 'My Name';
+  watchData[Defs.WatchMyName] 		= 'My Name';
   watchData[Defs.WatchHourFormat] 	= 12;
-  watchData[Defs.WatchIceBackground] = '0x000000';
+  watchData[Defs.WatchIceBackground] 	= '0x000000';
   watchData[Defs.WatchIceTextColor] 	= '0xffffff';
   watchData[Defs.WatchMeBackground] 	= '0x000000';
   watchData[Defs.WatchMeTextColor] 	= '0xffffff';
-  watchData[Defs.WatchShowBT] 	= 'on';
+  watchData[Defs.WatchShowBT] 		= 'on';
   watchData[Defs.WatchShowBattery] 	= 'on';
-  watchData[Defs.WatchBTConnected] 	= true;
+  watchData[Defs.WatchBTConnected] 	= 'on';
 
 // replace defaults with saved settings
   if (Defs.ConfigIceName in configData) 
@@ -112,6 +112,7 @@ function ProcessConfig(e)
     }
   );
   console.log('phoneSide: ProcessConfig: sendAppMessage completed:');
-  window.localStorage.putItem('IceWatch',JSON.stringify(configData)); // save config data
+  // window already closed here, so this won't work. add to web page code
+  // window.localStorage.putItem('IceWatch',JSON.stringify(configData)); // save config data
   console.log('phoneSide: ProcessConfig: after localstorage set: done:');
 } // ProcessConfig

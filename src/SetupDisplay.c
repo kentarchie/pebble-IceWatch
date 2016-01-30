@@ -152,13 +152,13 @@ void loadLayers()
 } //loadLayers
 
 TextLayer * makeTextLayer( Window * win
-											 ,int x, int y
-                                  ,int width, int height 
-				  							 ,GColor backgroundColor
-											 ,GColor textColor 
-				  							 ,const char * font
-                                  ,GTextAlignment alignment
-				  							 ,char * initialText)
+			   ,int x, int y
+                           ,int width, int height 
+			   ,GColor backgroundColor
+			   ,GColor textColor 
+			   ,const char * font
+                           ,GTextAlignment alignment
+			   ,char * initialText)
 {
   APP_LOG(DebugLevel, "ICEWatch makeTextLayer: START");
   TextLayer *newLayer = text_layer_create(GRect(x, y, width, height));
@@ -180,17 +180,17 @@ void processLayers()
          APP_LOG(DebugLevel, "ICEWatch making textLayer (%d)",layer);
          Layers[layer].layer =  makeTextLayer(mainWindow
                 ,Layers[layer].xpos, Layers[layer].ypos, Layers[layer].width, Layers[layer].height,
-  		          Layers[layer].backgroundColor,Layers[layer].textColor,
-		          Layers[layer].font, Layers[layer].align, Layers[layer].defaultText
+  		Layers[layer].backgroundColor,Layers[layer].textColor,
+		Layers[layer].font, Layers[layer].align, Layers[layer].defaultText
          );
       }
 
       if(strcmp(Layers[layer].type , "bitmap") == 0) {
          APP_LOG(DebugLevel, "ICEWatch making bitmapLayer (%d)",layer);
-         Layers[layer].layer =  bitmap_layer_create(GRect(Layers[layer].xpos, Layers[layer].ypos, Layers[layer].width, Layers[layer].height));
+         Layers[layer].layer =  bitmap_layer_create(GRect(Layers[layer].xpos, Layers[layer].ypos
+						    ,Layers[layer].width, Layers[layer].height));
          layer_add_child(window_get_root_layer(mainWindow), bitmap_layer_get_layer(Layers[layer].layer));
       }
    } // for
   APP_LOG(DebugLevel, "ICEWatch processLayers: DONE");
 } // processLayers
-

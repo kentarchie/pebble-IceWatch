@@ -95,19 +95,23 @@ void BatteryStatusOff()
 void handleBattery(BatteryChargeState charge_state)
 {
 	static char battery_text[] = "100%";
-	//APP_LOG(DebugLevel, "handleBattery start");
+	APP_LOG(DebugLevel, "handleBattery start");
 	if(persist_exists(KEY_SHOW_BATTERY)){
   		bool value = persist_read_bool(KEY_SHOW_BATTERY);
+  		APP_LOG(DebugLevel, "handleBattery: bool value :%d:",value);
 		if (!value) {
 			return;
 		}
 	}
 
   if (charge_state.is_charging) {
+    APP_LOG(DebugLevel, "handleBattery is_charging");
     snprintf(battery_text, sizeof(battery_text), "chg");
   } else {
+    APP_LOG(DebugLevel, "handleBattery not charging");
     snprintf(battery_text, sizeof(battery_text), "%d%%", charge_state.charge_percent);
+    APP_LOG(DebugLevel, "handleBattery charge percent=%d",charge_state.charge_percent);
   }
   text_layer_set_text(GET_LAYER(BATTERY_LAYER), battery_text);
-  //APP_LOG(DebugLevel, "batteryCheck");
+  APP_LOG(DebugLevel, "batteryCheck");
 } //handleBattery

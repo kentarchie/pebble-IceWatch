@@ -35,10 +35,10 @@ function loadOptions() {
   if (localStorage[Defs.ConfigIceName]) $('#iceName').val(localStorage[Defs.ConfigIceName]);
   if (localStorage[Defs.ConfigIcePhone]) $('#icePhone').val(localStorage[Defs.ConfigIcePhone]);
   if (localStorage[Defs.ConfigHourFormat]) {
-     $('#hourFormat12').prop('checked',false);
-     $('#hourFormat24').prop('checked',false);
-     if (localStorage[Defs.ConfigHourFormat] == 12) $('#hourFormat12').prop('checked',true);
-     if (localStorage[Defs.ConfigHourFormat] == 24) $('#hourFormat24').prop('checked',true);
+     $('#hourFormat12').attr('checked',false);
+     $('#hourFormat24').attr('checked',false);
+     if (localStorage[Defs.ConfigHourFormat] == 12) $('#hourFormat12').attr('checked',true);
+     if (localStorage[Defs.ConfigHourFormat] == 24) $('#hourFormat24').attr('checked',true);
   }
 
   if (localStorage[Defs.ConfigIceBackground]) 
@@ -51,32 +51,30 @@ function loadOptions() {
           $('#meTextColor').val(localStorage[Defs.ConfigMeTextColor]);
 
   if (localStorage[Defs.ConfigShowBattery]) 
-          $('#showBatteryStatus').prop('checked', localStorage[Defs.ConfigShowBattery] == 'true');
+          $('#showBatteryStatus').attr('checked', localStorage[Defs.ConfigShowBattery] == 'true');
   if (localStorage[Defs.ConfigShowBT]) 
-          $('#showBTStatus').prop('checked', localStorage[Defs.ConfigShowBT] == 'true');
+          $('#showBTStatus').attr('checked', localStorage[Defs.ConfigShowBT] == 'true');
 } // loadOptions
 
 function saveOptions()
 {
    var hourFormatVal = $('input[name="hourFormat"]:checked').val();
    var options = {
-       "iceName"             : $('#iceName').val()
-       ,"icePhone"           : $('#icePhone').val()
-       ,"myName"             : $('#myName').val()
-        ,"hourFormat"        : hourFormatVal
-        ,"batteryON"         : true
-        ,"iceBackground"     : $('#iceBackgroundColor').val()
-        ,"iceTextColor"      : $('#iceTextColor').val()
-        ,"meBackground"      : $('#meBackgroundColor').val()
-        ,"meTextColor"       : $('#meTextColor').val()
-        ,"showBatteryStatus" : $('#showBatteryStatus').attr('checked')
-        ,"showBTStatus"      : $('#showBTStatus').attr('checked')
+       "iceName"            : $('#iceName').val()
+       ,"icePhone"          : $('#icePhone').val()
+       ,"myName"            : $('#myName').val()
+       ,"hourFormat"        : hourFormatVal
+       ,"batteryON"         : true
+       ,"iceBackground"     : $('#iceBackgroundColor').val()
+       ,"iceTextColor"      : $('#iceTextColor').val()
+       ,"meBackground"      : $('#meBackgroundColor').val()
+       ,"meTextColor"       : $('#meTextColor').val()
+       ,"showBatteryStatus" : ($('#showBatteryStatus').attr('checked')) ? "on" : "off"
+       ,"showBTStatus"      : ($('#showBTStatus').attr('checked')) ? "on" : "off"
     };
    //logger("iceBackgroundColor = " +  $('#iceBackgroundColor').val());
-   logger("showBTStatus = " +  $('#showBTStatus').attr('checked'));
-   //logger("showBatteryStatus.val = " +  $('#showBatteryStatus').val());
-   //logger("showBatteryStatus.checked = " +  $('#showBatteryStatus').checked);
-   logger("showBatteryStatus.attr = " +  $('#showBatteryStatus').attr('checked'));
+   logger("saveOptions: showBTStatus = " +  ($('#showBTStatus').attr('checked')) ? "on" : "off";
+   logger("saveOptions: showBatteryStatus.attr = " +  ($('#showBatteryStatus').attr('checked')) ? "on" : "off";
 
    //logger('saveOptions: options=:'+ JSON.stringify(options)+':');
 
@@ -97,7 +95,7 @@ function saveOptions()
 function sendForm()
 {
    //logger("configPage: Submit clicked");
-   var return_to = getQueryParam('return_to', 'pebblejs://close#');
+   var return_to = getQueryParam('return_to', 'pebblejs://close#success');
 
    //logger("options = " +  JSON.stringify(saveOptions()));
    var location = return_to + encodeURIComponent(JSON.stringify(saveOptions()));
@@ -107,9 +105,8 @@ function sendForm()
 
 function cancelForm()
 {
-   //logger("configPage: Cancel clicked");
-   saveOptions();
-   //document.location = "pebblejs://close";
+   logger("configPage: Cancel clicked");
+   document.location = "pebblejs://close#cancel";
 } // cancelForm
 
 function getQueryParam(variable, defaultValue) {
