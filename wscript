@@ -14,6 +14,24 @@ from waflib.Configure import conf
 top = '.'
 out = 'build'
 
+def generate_appinfo_h(ctx):
+    print('Generating appinfo.h')
+    
+    src = 'appinfo.json'
+    targetdir = 'src/generated/'
+    target = targetdir + 'appinfo.h'
+    appinfo = json.load(open(src))
+
+    if not os.path.isdir(targetdir) :
+       os.mkdir(targetdir)
+    f = open(target, 'w')
+    f.write('#pragma once\n\n')
+    f.write('#define VERSION_LABEL "{0}"\n'.format(appinfo["versionLabel"]))
+    f.write('#define UUID "{0}"\n'.format(appinfo["uuid"]))
+    for key in appinfo['appKeys']:
+        f.write('#define {0} {1}\n'.format(key.upper(), appinfo['appKeys'][key]))
+    f.close()
+
 def options(ctx):
     ctx.load('pebble_sdk')
 
@@ -22,6 +40,7 @@ def configure(ctx):
 
 def build(ctx):
     ctx.load('pebble_sdk')
+    ctx.add_pre_fun(generate_appinfo_h)
 
     build_worker = os.path.exists('worker_src')
     binaries = []

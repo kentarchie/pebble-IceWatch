@@ -1,4 +1,5 @@
 #include <pebble.h>
+#include "generated/appinfo.h"
 #include "Constants.h"
 #include "Global.h"
 #include "Actions.h"
@@ -25,10 +26,10 @@ void processContactName(DictionaryIterator *iter, void *context)
 {
    char * contactName = "Name";
    Tuple *tuple = dict_find(iter, KEY_CONTACT_NAME);
-	if(!tuple) {
-	   APP_LOG(DebugLevel, "ICEWatch: ProcessContactName: no contact name");
-		return;
-	}
+   if(!tuple) {
+      APP_LOG(DebugLevel, "ICEWatch: ProcessContactName: no contact name");
+      return;
+   }
 
    if(tuple->value->cstring) contactName = tuple->value->cstring;
 	APP_LOG(DebugLevel, "ICEWatch: contactName =:%s:",contactName);

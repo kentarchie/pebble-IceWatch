@@ -40,11 +40,16 @@ function ProcessConfig(e)
 {
   console.log('phoneSide: ProcessConfig: start');
   console.log('phoneSide: ProcessConfig: response = :'+ e.response + ':');
+  if(e == undefined || e.response == undefined) {
+  	console.log('phoneSide: ProcessConfig: response empty');
+	return;
+  }
 
   var configData = JSON.parse(decodeURIComponent(e.response));
   console.log('phoneSide: ProcessConfig: configData = ' + JSON.stringify(configData));
   var watchData = {};
   // default config settings
+  watchData["KEY_MESSAGE_TYPE"]         = 'config';
   watchData[Defs.WatchIceName] 		= 'Emergency Contact Name';
   watchData[Defs.WatchIcePhone] 	= '123-555-1234';
   watchData[Defs.WatchMyName] 		= 'My Name';

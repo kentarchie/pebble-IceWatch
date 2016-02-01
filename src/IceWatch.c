@@ -3,6 +3,7 @@
 // bluetooth code taken from classio-battery-connection example code
 // battery status code taken from classio-battery-connection example code
   
+#include "generated/appinfo.h"
 #include "Constants.h"
 #include "SetupDisplay.h"
 #include "Actions.h"
@@ -27,9 +28,10 @@ BitmapLayer *bluetoothLayer;
 AppTimer * btBuzzerTimer;
 int HourFormat = 24;
 
-static void inbox_received_handler(DictionaryIterator *iter, void *context) 
+
+static void updateConfig(DictionaryIterator *iter, void *context) 
 {
-	APP_LOG(DebugLevel, "ICEWatch inbox_handler: received message");
+	APP_LOG(DebugLevel, "ICEWatch updateConfig: received message");
 	processContactName(iter, context);
 	processContactPhone(iter, context);
 	processMyName(iter, context);
@@ -41,7 +43,66 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context)
 	processMeBackground(iter, context);
 	processMeTextColor(iter, context);
 	APP_LOG(DebugLevel, "ICEWatch inbox_handler: DONE");
+} // updateConfig
+
+static void sendConfig() 
+{
+	APP_LOG(DebugLevel, "ICEWatch sendConfig: making config message");
+	DictionaryIterator *iter;
+  	app_message_outbox_begin(&iter);
+	
+  	if (!iter) {
+    	// Error creating outbound message
+    	return;
+  	}
+	
+  	int value = 6;
+  	char *  value2 = "a string";
+//#define KEY_CONTACT_PHONE 1
+//#define KEY_MESSAGE_TYPE 11
+//#define KEY_CONTACT_NAME 0
+//#define KEY_ICE_TEXTCOLOR 6
+//#define KEY_MY_NAME 2
+//#define KEY_ME_TEXTCOLOR 8
+//#define KEY_HOUR_FORMAT 3
+//#define KEY_ICE_BACKGROUND 5
+//#define KEY_BT_CONNECTION 9
+//#define KEY_SHOW_BATTERY 4
+//#define KEY_ME_BACKGROUND 7
+
+  	dict_write_int(iter, KEY_ICE_TEXTCOLOR, &value, sizeof(int), true);
+  	dict_write_cstring(iter, KEY_MY_NAME, value2);
+  	dict_write_end(iter);
+	
+  	app_message_outbox_send();
+	APP_LOG(DebugLevel, "ICEWatch sendConfig: config message sent");
+} // sendConfig
+
+static void inbox_received_handler(DictionaryIterator *iter, void *context) 
+{
+	APP_LOG(DebugLevel, "ICEWatch inbox_handler: received message");
+	APP_LOG(DebugLevel, "ICEWatch inbox_handler: received message");
+   	Tuple *tuple = dict_find(iter, KEY_MESSAGE_TYPE);
+        if(!tuple) {
+           APP_LOG(DebugLevel, "ICEWatch: inbox_received_handler: no message type");
+           return;
+        }
+
+        char * messageType = (tuple->value->cstring) ? tuple->value->cstring : "";
+	APP_LOG(DebugLevel, "ICEWatch: messageType =:%s:",messageType);
+
+        if((messageType != NULL) && (strcmp(messageType,"config") == 0))
+		updateConfig(iter, context);
+	else
+		sendConfig();
+	
+	APP_LOG(DebugLevel, "ICEWatch inbox_handler: DONE");
 } // inbox_received_handler
+
+static void inbox_dropped_handler(AppMessageResult reason, void *context) 
+{
+	APP_LOG(DebugLevel, "ICEWatch inbox_handler: dropped message");
+} // inbox_dropped_handler
 
 static void loadSettings() 
 {
@@ -146,6 +207,7 @@ static void init()
   bluetooth_connection_service_subscribe(bluetoothHandler);
 
   app_message_register_inbox_received(inbox_received_handler);
+  app_message_register_inbox_dropped(inbox_dropped_handler);
   app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
 } // init
 

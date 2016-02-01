@@ -1,7 +1,7 @@
 {
   "uuid": "9188b5c1-bb16-45d5-97db-39bb3c0a3e12",
   "shortName": "IceWatch",
-  "longName": "Watch with ICE info",
+  "longName": "Watch with Emergency Contact info",
   "companyName": "Moose Software",
   "versionLabel": "0.7",
   "sdkVersion": "3",
@@ -26,6 +26,7 @@
     ,"KEY_ME_TEXTCOLOR"   : 8
     ,"KEY_BT_CONNECTION"  : 9
     ,"KEY_SHOW_BT"  	  : 10
+    ,"KEY_MESSAGE_TYPE"   : 11
   },
 
   "resources": {

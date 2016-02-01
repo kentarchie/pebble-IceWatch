@@ -10,7 +10,7 @@ function clearLog()
 function logger(str)
 {
   var oldStr = $('#logger').html();
-  $('#logger').html('config: ' + oldStr + '<hr />' + str);
+  $('#logger').html(oldStr + '<hr />' + 'config:' + str);
 } // logger
 
 function init()
@@ -20,9 +20,33 @@ function init()
    $('#b-cancel').click(cancelForm);
    $('#b-submit').click(sendForm);
 
+   Pebble.addEventListener('appmessage',
+  	function(e) {
+    		logger('init: Received message: ' + JSON.stringify(e.payload));
+  	}
+   );
+
+   logger('init: before requestConfig');
+   //requestConfig();
+   logger('init: after requestConfig');
    //Set form values to whatever is passed in.
    loadOptions();
 } // init
+
+function requestConfig()
+{
+  var watchData = {};
+  watchData["KEY_MESSAGE_TYPE"] = 'get-config';
+  logger('requestConfig: Sending config request:');
+  Pebble.sendAppMessage(watchData, 
+     function() { /* passed function */
+        logger('requestConfig: Send successful:');
+        }
+  , function() { /* failed function */
+      logger('requestConfig: Send app message failed!');
+    }
+  );
+} // requestConfig
 
 function loadOptions() {
   var storeString = JSON.stringify(localStorage);
@@ -94,18 +118,18 @@ function saveOptions()
 
 function sendForm()
 {
-   //logger("configPage: Submit clicked");
+   //logger("sendForm: Submit clicked");
    var return_to = getQueryParam('return_to', 'pebblejs://close#success');
 
-   //logger("options = " +  JSON.stringify(saveOptions()));
+   //logger("sendForm: options = " +  JSON.stringify(saveOptions()));
    var location = return_to + encodeURIComponent(JSON.stringify(saveOptions()));
-   //logger("configPage: Warping to: " + location);
+   //logger("sendForm: Warping to: " + location);
    document.location = location;
 } // sendForm
 
 function cancelForm()
 {
-   logger("configPage: Cancel clicked");
+   logger("cancelForm: Cancel clicked");
    document.location = "pebblejs://close#cancel";
 } // cancelForm
 
