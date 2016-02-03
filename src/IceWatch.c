@@ -8,6 +8,7 @@
 #include "SetupDisplay.h"
 #include "Actions.h"
 #include "ConfigHandlers.h"
+#include "ConfigData.h"
 #include "Utilities.h"
 #include "Layers.h"
 
@@ -24,6 +25,8 @@ Layer Layers[LAYERCOUNT];
 
 GBitmap *bluetoothImageOn,*bluetoothImageOff;
 BitmapLayer *bluetoothLayer;
+
+ConfigData CONFIG_DATA;
 
 AppTimer * btBuzzerTimer;
 int HourFormat = 24;

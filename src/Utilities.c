@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include "generated/appinfo.h"
+#include "ConfigData.h"
 #include "Constants.h"
 #include "Global.h"
 #include "Utilities.h"

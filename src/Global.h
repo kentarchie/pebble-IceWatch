@@ -11,3 +11,4 @@ extern GBitmap *bluetoothImageOff;
 extern BitmapLayer *bluetoothLayer;
 extern AppTimer *btBuzzerTimer;
 extern bool DebugLevel;
+extern ConfigData CONFIG_DATA;

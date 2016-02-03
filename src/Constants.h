@@ -13,4 +13,6 @@
 #define BATTERY_LAYER 6
 #define BLUETOOTH_LAYER 7
 
+#define OBJECT_KEY 124   /* used to persist ConfigData struct */
+
 #define GET_LAYER(X)  Layers[X].layer
