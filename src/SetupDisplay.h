@@ -8,3 +8,6 @@ TextLayer* dateSetup();
 TextLayer* batterySetup();
 void processLayers();
 void loadLayers();
+void setDisplayData();
+void setBackgroundColor(int ,TextLayer * );
+void setTextColor(int ,TextLayer * );

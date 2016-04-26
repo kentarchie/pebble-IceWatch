@@ -7,11 +7,14 @@ typedef struct {
     int iceTextColor;
     int meBackgroundColor;
     int meTextColor;
-    bool hourFormat;
+    int hourFormat;
     bool showBT;
     bool showBattery;
 } ConfigData;
 
-bool fetchConfiguration();
-bool saveConfiguration();
+void fetchConfiguration();
+void saveConfiguration();
+void loadConfiguration();
 bool convertConfiguration();
+void logConfiguration();
+void initializeConfiguration();

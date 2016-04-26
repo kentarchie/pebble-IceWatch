@@ -15,7 +15,7 @@ void updateTime()
   struct tm *tickTime = localtime(&temp);
   static char timeBuffer[] = "00:00";
 
-  if (HourFormat == 24) {
+  if (CONFIG_DATA.hourFormat == 24) {
     strftime(timeBuffer, sizeof("00:00"), "%H:%M", tickTime);
   } else {
     strftime(timeBuffer, sizeof("00:00"), "%l:%M", tickTime);
@@ -98,13 +98,7 @@ void handleBattery(BatteryChargeState charge_state)
 {
 	static char battery_text[] = "100%";
 	//APP_LOG(DebugLevel, "handleBattery start");
-	if(persist_exists(KEY_SHOW_BATTERY)){
-  		bool value = persist_read_bool(KEY_SHOW_BATTERY);
-  		//APP_LOG(DebugLevel, "handleBattery: bool value :%d:",value);
-		if (!value) {
-			return;
-		}
-	}
+	if(!CONFIG_DATA.showBattery) return;
 
   if (charge_state.is_charging) {
     //APP_LOG(DebugLevel, "handleBattery is_charging");

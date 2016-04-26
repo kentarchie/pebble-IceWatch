@@ -1,6 +1,7 @@
 #include <pebble.h>
 #include "generated/appinfo.h"
 #include "ConfigData.h"
+#include "Actions.h"
 #include "Constants.h"
 #include "Global.h"
 #include "Utilities.h"
@@ -153,6 +154,20 @@ void loadLayers()
 	};
 } //loadLayers
 
+void setBackgroundColor(int color,TextLayer * layer)
+{
+  GColor background_color = GColorFromHEX(color);
+  text_layer_set_background_color(layer, background_color);
+  APP_LOG(DebugLevel, "ICEWatch: setBackgroundColor: value=:%#06x:%d:",color,color);
+} // setBackgroundColor
+
+void setTextColor(int color,TextLayer * layer)
+{
+  GColor textColor = GColorFromHEX(color);
+  text_layer_set_text_color(layer, textColor);
+  APP_LOG(DebugLevel, "ICEWatch: setTextColor: value=:%#06x:%d:",color,color);
+} // setTextColor
+
 TextLayer * makeTextLayer( Window * win
 			   ,int x, int y
                            ,int width, int height 
@@ -196,3 +211,33 @@ void processLayers()
    } // for
   APP_LOG(DebugLevel, "ICEWatch processLayers: DONE");
 } // processLayers
+
+void setDisplayData()
+{
+   APP_LOG(DebugLevel, "ICEWatch setDisplay: START");
+   setTextColor(CONFIG_DATA.iceTextColor,GET_LAYER(ICE_NAME_LAYER));
+   setTextColor(CONFIG_DATA.iceTextColor,GET_LAYER(ICE_PHONE_LAYER));
+   setTextColor(CONFIG_DATA.meTextColor,GET_LAYER(ME_NAME_LAYER));
+
+   setBackgroundColor(CONFIG_DATA.iceBackgroundColor,GET_LAYER(ICE_NAME_LAYER));
+   setBackgroundColor(CONFIG_DATA.iceBackgroundColor,GET_LAYER(ICE_PHONE_LAYER));
+   setBackgroundColor(CONFIG_DATA.meBackgroundColor,GET_LAYER(ME_NAME_LAYER));
+
+  	text_layer_set_text(GET_LAYER(ME_NAME_LAYER), CONFIG_DATA.myName);
+  	text_layer_set_text(GET_LAYER(ICE_NAME_LAYER), CONFIG_DATA.iceName);
+  	text_layer_set_text(GET_LAYER(ICE_PHONE_LAYER), CONFIG_DATA.icePhone);
+
+   APP_LOG(DebugLevel, "ICEWatch setDislayData: showBattery=:%d:",CONFIG_DATA.showBattery);
+   if(CONFIG_DATA.showBattery)
+	   BatteryStatusOn();
+   else
+	   BatteryStatusOff();
+
+   APP_LOG(DebugLevel, "ICEWatch setDislayData: showBT=:%d:",CONFIG_DATA.showBT);
+   if(CONFIG_DATA.showBT)
+      bluetoothHandler(bluetooth_connection_service_peek());
+   else
+     bitmap_layer_set_bitmap(GET_LAYER(BLUETOOTH_LAYER), bluetoothImageOff);
+   updateTime();
+   APP_LOG(DebugLevel, "ICEWatch setDisplay: DONE");
+} // setDisplayData
