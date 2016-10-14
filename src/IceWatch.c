@@ -8,8 +8,7 @@
 #include "Utilities.h"
 #include "Layers.h"
 
-// bluetooth code taken from classio-battery-connection example code
-// battery status code taken from classio-battery-connection example code
+// bluetooth and battery status code taken from classio-battery-connection example code
 
 Window *mainWindow;
 TextLayer *ICELabelLayer;

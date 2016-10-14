@@ -138,7 +138,8 @@ def concat_javascript(ctx, js_path=None):
                 f.write(body + '\n')
                 lineno += body.count('\n') + 1
 
-    js_target = ctx.path.make_node('build/src/js/pebble-js-app.js')
+    #js_target = ctx.path.make_node('build/src/js/pebble-js-app.js')
+    js_target = ctx.path.make_node('build/src/js/app.js')
 
     ctx(rule=concat_javascript_task,
         source=js_nodes,

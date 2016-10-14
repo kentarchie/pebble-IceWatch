@@ -18,11 +18,11 @@ Pebble.addEventListener('appmessage',
   	function(e) {
     		var configData = JSON.stringify(e.payload);
     		console.log('phoneside: appmessage: Received message: ' + configData);
-         //var url = ProdURL+'?' + encodeURIComponent(configData);
-         var url = TestURL+'?' + encodeURIComponent(configData);         
-         console.log('phoneSide: appmessage: url=:'+url+':');
-         Pebble.openURL(url); // open the config web page
-         console.log('phoneSide: appmessage: done');
+         	//var url = ProdURL+'?' + encodeURIComponent(configData);
+         	var url = TestURL+'?' + encodeURIComponent(configData);         
+         	console.log('phoneSide: appmessage: url=:'+url+':');
+         	Pebble.openURL(url); // open the config web page
+         	console.log('phoneSide: appmessage: done');
   	}
 );
 

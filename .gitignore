@@ -8,3 +8,5 @@ attic
 # Ignore waf lock file
 .lock-waf*
 *.swp*
+
+node_modules/

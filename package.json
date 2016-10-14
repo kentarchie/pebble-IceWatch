@@ -1,0 +1,57 @@
+{
+  "version": "0.7.0",
+  "author": "Moose Software",
+  "private": true,
+  "dependencies": {},
+  "keywords": [
+    "pebble-app"
+  ],
+  "pebble": {
+    "sdkVersion": "3",
+    "resources": {
+      "media": [
+        {
+          "type": "png",
+          "name": "bluetoothOn",
+          "file": "images/bluetooth32-color.png"
+        },
+        {
+          "type": "png",
+          "name": "bluetoothOff",
+          "file": "images/stop32-color.png"
+        }
+      ]
+    },
+    "projectType": "native",
+    "uuid": "9188b5c1-bb16-45d5-97db-39bb3c0a3e12",
+    "messageKeys": {
+      "KEY_CONTACT_PHONE": 1,
+      "KEY_MESSAGE_TYPE": 11,
+      "KEY_CONTACT_NAME": 0,
+      "KEY_ICE_TEXTCOLOR": 6,
+      "KEY_DATA_VERSION": 12,
+      "KEY_MY_NAME": 2,
+      "KEY_ME_TEXTCOLOR": 8,
+      "KEY_HOUR_FORMAT": 3,
+      "KEY_ICE_BACKGROUND": 5,
+      "KEY_BT_CONNECTION": 9,
+      "KEY_SHOW_BATTERY": 4,
+      "KEY_ME_BACKGROUND": 7,
+      "KEY_SHOW_BT": 10
+    },
+    "enableMultiJS": true,
+    "displayName": "Watch with Emergency Contact info",
+    "watchapp": {
+      "onlyShownOnCommunication": false,
+      "hiddenApp": false,
+      "watchface": true
+    },
+    "targetPlatforms": [
+      "basalt"
+    ],
+    "capabilities": [
+      "configurable"
+    ]
+  },
+  "name": "IceWatch"
+}

@@ -1,47 +1,62 @@
 {
-  "uuid": "9188b5c1-bb16-45d5-97db-39bb3c0a3e12",
-  "shortName": "IceWatch",
-  "longName": "Watch with Emergency Contact info",
-  "companyName": "Moose Software",
-  "versionLabel": "0.7",
-  "sdkVersion": "3",
-  "capabilities": [
-    "configurable"
-  ],
-  "targetPlatforms": [
-    "basalt"
-  ],
-  "watchapp": {
-    "watchface": true
-  },
-  "appKeys": {
-    "KEY_CONTACT_NAME"    : 0
-    ,"KEY_CONTACT_PHONE"  : 1
-    ,"KEY_MY_NAME"        : 2
-    ,"KEY_HOUR_FORMAT"    : 3
-    ,"KEY_SHOW_BATTERY"   : 4
-    ,"KEY_ICE_BACKGROUND" : 5
-    ,"KEY_ICE_TEXTCOLOR"  : 6
-    ,"KEY_ME_BACKGROUND"  : 7
-    ,"KEY_ME_TEXTCOLOR"   : 8
-    ,"KEY_BT_CONNECTION"  : 9
-    ,"KEY_SHOW_BT"  	     : 10
-    ,"KEY_MESSAGE_TYPE"   : 11
-    ,"KEY_DATA_VERSION"   : 12
-  },
-
-  "resources": {
-    "media": [
-   {
-      "type": "png",
-      "name": "bluetoothOn",
-      "file": "images/bluetooth32-color.png"
-   }
-   ,{
-      "type": "png",
-      "name": "bluetoothOff",
-      "file": "images/stop32-color.png"
-   }
-    ]
-  }
+    "targetPlatforms": [
+        "basalt"
+    ], 
+    "uuid": "9188b5c1-bb16-45d5-97db-39bb3c0a3e12", 
+    "messageKeys": {
+        "KEY_MESSAGE_TYPE": 11, 
+        "KEY_ICE_TEXTCOLOR": 6, 
+        "KEY_DATA_VERSION": 12, 
+        "KEY_MY_NAME": 2, 
+        "KEY_ME_TEXTCOLOR": 8, 
+        "KEY_ICE_BACKGROUND": 5, 
+        "KEY_BT_CONNECTION": 9, 
+        "KEY_SHOW_BATTERY": 4, 
+        "KEY_ME_BACKGROUND": 7, 
+        "KEY_SHOW_BT": 10, 
+        "KEY_CONTACT_PHONE": 1, 
+        "KEY_CONTACT_NAME": 0, 
+        "KEY_HOUR_FORMAT": 3
+    }, 
+    "companyName": "Moose Software", 
+    "enableMultiJS": true, 
+    "versionLabel": "0.7", 
+    "capabilities": [
+        "configurable"
+    ], 
+    "sdkVersion": "3", 
+    "appKeys": {
+        "KEY_MESSAGE_TYPE": 11, 
+        "KEY_ICE_TEXTCOLOR": 6, 
+        "KEY_DATA_VERSION": 12, 
+        "KEY_MY_NAME": 2, 
+        "KEY_ME_TEXTCOLOR": 8, 
+        "KEY_ICE_BACKGROUND": 5, 
+        "KEY_BT_CONNECTION": 9, 
+        "KEY_SHOW_BATTERY": 4, 
+        "KEY_ME_BACKGROUND": 7, 
+        "KEY_SHOW_BT": 10, 
+        "KEY_CONTACT_PHONE": 1, 
+        "KEY_CONTACT_NAME": 0, 
+        "KEY_HOUR_FORMAT": 3
+    }, 
+    "longName": "Watch with Emergency Contact info", 
+    "shortName": "IceWatch", 
+    "watchapp": {
+        "watchface": true
+    }, 
+    "resources": {
+        "media": [
+            {
+                "type": "png", 
+                "name": "bluetoothOn", 
+                "file": "images/bluetooth32-color.png"
+            }, 
+            {
+                "type": "png", 
+                "name": "bluetoothOff", 
+                "file": "images/stop32-color.png"
+            }
+        ]
+    }
 }
