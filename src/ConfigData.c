@@ -25,6 +25,7 @@ void saveConfiguration()
     persist_write_int(    KEY_ME_TEXTCOLOR,   CONFIG_DATA.meTextColor);
 
     persist_write_int(    KEY_HOUR_FORMAT,    CONFIG_DATA.hourFormat);
+    APP_LOG(DebugLevel, "ICEWatch: saveConfiguration: hourFormat :%d:",CONFIG_DATA.hourFormat);
     persist_write_bool(   KEY_SHOW_BT,        CONFIG_DATA.showBT);
     persist_write_bool(   KEY_SHOW_BATTERY,   CONFIG_DATA.showBattery);
 
@@ -54,6 +55,7 @@ void loadConfiguration()
     CONFIG_DATA.meBackgroundColor = persist_read_int(KEY_ME_BACKGROUND);
     CONFIG_DATA.meTextColor = persist_read_int(KEY_ME_TEXTCOLOR);
     CONFIG_DATA.hourFormat = persist_read_int(KEY_HOUR_FORMAT);
+    APP_LOG(DebugLevel, "ICEWatch: loadConfiguration: hourFormat :%d:",CONFIG_DATA.hourFormat);
     CONFIG_DATA.showBT = persist_read_bool(KEY_SHOW_BT);
     CONFIG_DATA.showBattery = persist_read_bool(KEY_SHOW_BATTERY);
 
@@ -169,6 +171,7 @@ void initializeConfiguration()
    CONFIG_DATA.meTextColor = (int)0x000;
    
    CONFIG_DATA.hourFormat = 12;
+   APP_LOG(DebugLevel, "ICEWatch: initializeConfiguration: default hourFormat :%d:",CONFIG_DATA.hourFormat);
    CONFIG_DATA.showBT = true;
    CONFIG_DATA.showBattery = true;
    APP_LOG(DebugLevel, "ICEWatch: initializeConfiguration: DONE");

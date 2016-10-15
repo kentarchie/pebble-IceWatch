@@ -20,7 +20,7 @@
     }, 
     "companyName": "Moose Software", 
     "enableMultiJS": true, 
-    "versionLabel": "0.7", 
+    "versionLabel": "0.9", 
     "capabilities": [
         "configurable"
     ], 
@@ -40,7 +40,7 @@
         "KEY_CONTACT_NAME": 0, 
         "KEY_HOUR_FORMAT": 3
     }, 
-    "longName": "Watch with Emergency Contact info", 
+    "longName": "Watch with Emergency Contact Info", 
     "shortName": "IceWatch", 
     "watchapp": {
         "watchface": true

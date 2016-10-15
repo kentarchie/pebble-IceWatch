@@ -15,6 +15,7 @@ void updateTime()
   struct tm *tickTime = localtime(&temp);
   static char timeBuffer[] = "00:00";
 
+  APP_LOG(DebugLevel, "ICEWatch: updateTime: hourFormat=:%d:",CONFIG_DATA.hourFormat);
   if (CONFIG_DATA.hourFormat == 24) {
     strftime(timeBuffer, sizeof("00:00"), "%H:%M", tickTime);
   } else {

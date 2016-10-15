@@ -1,5 +1,5 @@
 {
-  "version": "0.7.0",
+  "version": "0.9.0",
   "author": "Moose Software",
   "private": true,
   "dependencies": {},
@@ -40,7 +40,7 @@
       "KEY_SHOW_BT": 10
     },
     "enableMultiJS": true,
-    "displayName": "Watch with Emergency Contact info",
+    "displayName": "Watch with Emergency Contact Info",
     "watchapp": {
       "onlyShownOnCommunication": false,
       "hiddenApp": false,

@@ -77,7 +77,7 @@ function makeOptionString()
    ConfigData['KEY_CONTACT_PHONE'] = $('#icePhone').val();
    ConfigData['KEY_MY_NAME'] = $('#myName').val();
 
-   ConfigData['KEY_HOUR_FORMAT'] = $('input[name="hourFormat"]:checked').val();
+   ConfigData['KEY_HOUR_FORMAT'] = parseInt($('input[name="hourFormat"]:checked').val());
 
    ConfigData['KEY_ICE_BACKGROUND'] = $('#iceBackgroundColor').val();
    ConfigData['KEY_ICE_TEXTCOLOR'] = $('#iceTextColor').val();
