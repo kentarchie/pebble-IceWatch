@@ -1,5 +1,4 @@
-//var IW = require('./js/defs');   // data fields names
-//var Defs = IW.IceWatchDefs;
+// code that runs in the configuration web page
 var ConfigData = {};
 $().ready(init);
 
@@ -10,25 +9,21 @@ function clearLog()
 
 function logger(str)
 {
-  //var oldStr = $('#logger').html();
-  //$('#logger').html(oldStr + '<hr />' + 'config:' + str);
   console.log(str);
 } // logger
 
 function init()
 {
    logger('init start');
-   //logger('init: Defs=:'+typeof Defs+':');
    $('#b-cancel').click(cancelForm);
    $('#b-submit').click(sendForm);
 
    var query = location.search.substring(1);
-   //logger('init: query = :'+query+':');
-   //logger('init: decoded query = :'+ decodeURIComponent(query) +':');
    ConfigData = JSON.parse(decodeURIComponent(query).split('&')[0]);
    logger('init: ConfigData = :'+ JSON.stringify(ConfigData) +':');
 
    setupOptions(ConfigData);
+   phoneSetup('icePhone');
 } // init
 
 function decToHexString(d)
@@ -38,10 +33,10 @@ function decToHexString(d)
 
 function setupOptions()
 {
-  logger('setupOptions start');
   logger('setupOptions: ConfigData.KEY_CONTACT_NAME = :'+ ConfigData.KEY_CONTACT_NAME +':');
   $('#myName').val(ConfigData['KEY_MY_NAME']);
   $('#iceName').val(ConfigData['KEY_CONTACT_NAME']);
+
   $('#icePhone').val(ConfigData['KEY_CONTACT_PHONE']);
 
   $('#hourFormat12').attr('checked',false);
@@ -53,13 +48,8 @@ function setupOptions()
   logger('setupOptions: [KEY_ME_BACKGROUND] config:'+ConfigData['KEY_ME_BACKGROUND']+': hex=:'+decToHexString(ConfigData['KEY_ME_BACKGROUND'])+':');
   logger('setupOptions: [KEY_ICE_TEXTCOLOR] config:'+ConfigData['KEY_ICE_TEXTCOLOR']+': hex=:'+decToHexString(ConfigData['KEY_ICE_TEXTCOLOR'])+':');
   logger('setupOptions: [KEY_ME_TEXTCOLOR] config:'+ConfigData['KEY_ME_TEXTCOLOR']+': hex=:'+decToHexString(ConfigData['KEY_ME_TEXTCOLOR'])+':');
-  logger('setupOptions: iceTextColor before:'+$('#iceTextColor').val()+':');
-  logger('setupOptions: meTextColor before:'+$('#meTextColor').val()+':');
 
-  logger('setupOptions: iceBackgroundColor before:'+$('#iceBackgroundColor').val()+':');
   $('#iceBackgroundColor').val(decToHexString(ConfigData['KEY_ICE_BACKGROUND']));
-  logger('setupOptions: iceBackgoundColor after:'+$('#iceBackgroundColor').val()+':');
-
   $('#meBackgroundColor').val(decToHexString(ConfigData['KEY_ME_BACKGROUND']));
   $('#iceTextColor').val(decToHexString(ConfigData['KEY_ICE_TEXTCOLOR']));
   $('#meTextColor').val(decToHexString(ConfigData['KEY_ME_TEXTCOLOR']));
@@ -67,7 +57,6 @@ function setupOptions()
   $('#showBatteryStatus').attr('checked',  ConfigData['KEY_SHOW_BATTERY'] == 'true');
   $('#showBTStatus').attr('checked',  ConfigData['KEY_SHOW_BT'] == 'true');
 
-  // from https://github.com/pebble/slate/issues/14
   $('.item-color').change();
 } // setupOptions
 
@@ -85,16 +74,13 @@ function makeOptionString()
    ConfigData['KEY_ME_TEXTCOLOR'] = $('#meTextColor').val();
    ConfigData['KEY_SHOW_BATTERY'] = ($('#showBatteryStatus').attr('checked')) ? 1 : 0;
    ConfigData['KEY_SHOW_BT'] = ($('#showBTStatus').attr('checked')) ? 1 : 0;
-   console.log('optionString=:'+JSON.stringify(ConfigData));
    logger('optionString=:'+JSON.stringify(ConfigData));
    return(JSON.stringify(ConfigData));
 } // makeOptionString
 
 function sendForm()
 {
-   //logger("sendForm: Submit clicked");
    var return_to = getQueryParam('return_to', 'pebblejs://close#');
-
    logger("sendForm: options = " +  JSON.stringify(makeOptionString()));
    var location = return_to + encodeURIComponent(makeOptionString());
    logger("sendForm: Warping to: " + location);
@@ -118,3 +104,44 @@ function getQueryParam(variable, defaultValue) {
   }
   return defaultValue || false;
 } //getQueryParam
+
+// from http://jsfiddle.net/mykisscool/VpNMA/
+function phoneSetup(phoneElement) 
+{
+   $('#'+phoneElement)
+	.keydown(function (e) {
+		var key = e.charCode || e.keyCode || 0;
+		$phone = $(this);
+
+		// Auto-format- do not expose the mask as the user begins to type
+		if (key !== 8 && key !== 9) {
+			if ($phone.val().length === 4) $phone.val($phone.val() + ')');
+			if ($phone.val().length === 5) $phone.val($phone.val() + ' ');
+			if ($phone.val().length === 9) $phone.val($phone.val() + '-');
+		}
+
+		// Allow numeric (and tab, backspace, delete) keys only
+		return (key == 8 || 
+				key == 9 ||
+				key == 46 ||
+				(key >= 48 && key <= 57) ||
+				(key >= 96 && key <= 105));	
+	})
+	
+	.bind('focus click', function () {
+		$phone = $(this);
+		
+		if ($phone.val().length === 0) {
+			$phone.val('(');
+		}
+		else {
+			var val = $phone.val();
+			$phone.val('').val(val); // Ensure cursor remains at the end
+		}
+	})
+	
+	.blur(function () {
+		$phone = $(this);
+		if ($phone.val() === '(') $phone.val('');
+	});
+}

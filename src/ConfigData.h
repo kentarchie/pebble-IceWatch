@@ -15,6 +15,5 @@ typedef struct {
 void fetchConfiguration();
 void saveConfiguration();
 void loadConfiguration();
-bool convertConfiguration();
 void logConfiguration();
 void initializeConfiguration();
