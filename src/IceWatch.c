@@ -207,6 +207,7 @@ static void tickHandler(struct tm *tickTime, TimeUnits units_changed)
 static void init()
 {
   // Create main Window element and assign to pointer
+  APP_LOG(DebugLevel, "ICEWatch init: Start");
   mainWindow = window_create();
   window_set_background_color(mainWindow, GColorCeleste);
 
@@ -237,7 +238,9 @@ static void deinit()
 
 int main(void)
 {
+  APP_LOG(DebugLevel, "ICEWatch main: START");
   init();
+  APP_LOG(DebugLevel, "ICEWatch main: after init");
   app_event_loop();
   deinit();
 } // main

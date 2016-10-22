@@ -21,6 +21,7 @@ function init()
    var query = location.search.substring(1);
    ConfigData = JSON.parse(decodeURIComponent(query).split('&')[0]);
    logger('init: ConfigData = :'+ JSON.stringify(ConfigData) +':');
+   logger('init: ConfigData[model] = :'+ ConfigData['model'] +':');
 
    setupOptions(ConfigData);
    phoneSetup('icePhone');
@@ -44,18 +45,24 @@ function setupOptions()
   if (ConfigData['KEY_HOUR_FORMAT'] == 12) $('#hourFormat12').attr('checked',true);
   if (ConfigData['KEY_HOUR_FORMAT'] == 24) $('#hourFormat24').attr('checked',true);
 
-  logger('setupOptions: [KEY_ICE_BACKGROUND] config:'+ConfigData['KEY_ICE_BACKGROUND']+': hex=:'+decToHexString(ConfigData['KEY_ICE_BACKGROUND'])+':');
-  logger('setupOptions: [KEY_ME_BACKGROUND] config:'+ConfigData['KEY_ME_BACKGROUND']+': hex=:'+decToHexString(ConfigData['KEY_ME_BACKGROUND'])+':');
-  logger('setupOptions: [KEY_ICE_TEXTCOLOR] config:'+ConfigData['KEY_ICE_TEXTCOLOR']+': hex=:'+decToHexString(ConfigData['KEY_ICE_TEXTCOLOR'])+':');
-  logger('setupOptions: [KEY_ME_TEXTCOLOR] config:'+ConfigData['KEY_ME_TEXTCOLOR']+': hex=:'+decToHexString(ConfigData['KEY_ME_TEXTCOLOR'])+':');
-
-  $('#iceBackgroundColor').val(decToHexString(ConfigData['KEY_ICE_BACKGROUND']));
-  $('#meBackgroundColor').val(decToHexString(ConfigData['KEY_ME_BACKGROUND']));
-  $('#iceTextColor').val(decToHexString(ConfigData['KEY_ICE_TEXTCOLOR']));
-  $('#meTextColor').val(decToHexString(ConfigData['KEY_ME_TEXTCOLOR']));
-
   $('#showBatteryStatus').attr('checked',  ConfigData['KEY_SHOW_BATTERY'] == 'true');
   $('#showBTStatus').attr('checked',  ConfigData['KEY_SHOW_BT'] == 'true');
+
+  if(ConfigData['model']['platform'] != 'aplite') {
+     logger('setupOptions: [KEY_ICE_BACKGROUND] config:'+ConfigData['KEY_ICE_BACKGROUND']+': hex=:'+decToHexString(ConfigData['KEY_ICE_BACKGROUND'])+':');
+     logger('setupOptions: [KEY_ME_BACKGROUND] config:'+ConfigData['KEY_ME_BACKGROUND']+': hex=:'+decToHexString(ConfigData['KEY_ME_BACKGROUND'])+':');
+     logger('setupOptions: [KEY_ICE_TEXTCOLOR] config:'+ConfigData['KEY_ICE_TEXTCOLOR']+': hex=:'+decToHexString(ConfigData['KEY_ICE_TEXTCOLOR'])+':');
+     logger('setupOptions: [KEY_ME_TEXTCOLOR] config:'+ConfigData['KEY_ME_TEXTCOLOR']+': hex=:'+decToHexString(ConfigData['KEY_ME_TEXTCOLOR'])+':');
+   
+     $('#iceBackgroundColor').val(decToHexString(ConfigData['KEY_ICE_BACKGROUND']));
+     $('#meBackgroundColor').val(decToHexString(ConfigData['KEY_ME_BACKGROUND']));
+     $('#iceTextColor').val(decToHexString(ConfigData['KEY_ICE_TEXTCOLOR']));
+     $('#meTextColor').val(decToHexString(ConfigData['KEY_ME_TEXTCOLOR']));
+   }
+   else
+     $('#colorPicker').hide();
+   }
+
 
   $('.item-color').change();
 } // setupOptions

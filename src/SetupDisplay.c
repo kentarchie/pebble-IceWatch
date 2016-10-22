@@ -23,7 +23,7 @@ void loadLayers()
 	.currentImage = NULL,
 	.defaultImage = NULL,
 	.backgroundColor = GColorWhite,
-	.textColor = GColorRed,
+	.textColor = COLOR_FALLBACK(GColorRed, GColorBlack),
 	.font = FONT_KEY_GOTHIC_28_BOLD,
 	.align = GTextAlignmentCenter
 	};
@@ -40,7 +40,7 @@ void loadLayers()
 	.defaultText = "Contact Name",
 	.currentImage = NULL,
 	.defaultImage = NULL,
-	.backgroundColor = GColorWhite,
+	.backgroundColor = GColorClear,
 	.textColor = GColorBlack,
 	.font = FONT_KEY_ROBOTO_CONDENSED_21,
 	.align = GTextAlignmentCenter
@@ -130,7 +130,7 @@ void loadLayers()
 	.defaultText = "100%",
 	.currentImage = NULL,
 	.defaultImage = NULL,
-	.textColor = GColorBlue,
+	.textColor = COLOR_FALLBACK(GColorBlue, GColorBlack),
 	.font = FONT_KEY_GOTHIC_24,
 	.align = GTextAlignmentCenter
 	};
@@ -148,7 +148,7 @@ void loadLayers()
 	.currentImage = gbitmap_create_with_resource(RESOURCE_ID_bluetoothOn),
 	.defaultImage = gbitmap_create_with_resource(RESOURCE_ID_bluetoothOn),
 	.backgroundColor = GColorWhite,
-	.textColor = GColorBlue,
+	.textColor = COLOR_FALLBACK(GColorBlue, GColorBlack),
 	.font = FONT_KEY_GOTHIC_24,
 	.align = GTextAlignmentCenter
 	};

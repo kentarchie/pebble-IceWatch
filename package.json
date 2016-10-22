@@ -23,7 +23,7 @@
       ]
     },
     "projectType": "native",
-    "uuid": "9188b5c1-bb16-45d5-97db-39bb3c0a3e12",
+    "uuid": "221cd7c9-56e8-42fd-bf21-c3c3637ca5a4",
     "messageKeys": {
       "KEY_CONTACT_PHONE": 1,
       "KEY_MESSAGE_TYPE": 11,
@@ -47,7 +47,7 @@
       "watchface": true
     },
     "targetPlatforms": [
-      "basalt"
+      "basalt","aplite"
     ],
     "capabilities": [
       "configurable"

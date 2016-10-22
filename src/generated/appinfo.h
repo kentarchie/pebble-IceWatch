@@ -1,7 +1,7 @@
 #pragma once
 
 #define VERSION_LABEL "0.9"
-#define UUID "9188b5c1-bb16-45d5-97db-39bb3c0a3e12"
+#define UUID "221cd7c9-56e8-42fd-bf21-c3c3637ca5a4"
 #define KEY_MESSAGE_TYPE 11
 #define KEY_CONTACT_PHONE 1
 #define KEY_CONTACT_NAME 0

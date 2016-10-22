@@ -16,6 +16,15 @@ Pebble.addEventListener('webviewclosed', ProcessConfig); // when Save button pre
 // Commonly, this code would be in the callback in showConfiguration
 Pebble.addEventListener('appmessage',
   	function(e) {
+  			if (Pebble.getActiveWatchInfo) {
+					// Available.
+					var info = Pebble.getActiveWatchInfo();
+					e.payload['model']= info;
+					console.log('Pebble model: ' + info.model);
+  			} else {
+  					// Gracefully handle no info available
+					e.payload['model']= "";
+  			}
     		var configData = JSON.stringify(e.payload);
     		console.log('phoneside: appmessage: Received message: ' + configData);
          	var url = ProdURL+'?' + encodeURIComponent(configData);
@@ -47,27 +56,13 @@ function SetupConfig()
     }
   );
   console.log('phoneSide: SetupConfig: sendAppMessage completed:');
-
-  /*
-  var optionString = window.localStorage.getItem('IceWatch');
-  if(!optionString) {
-     console.log('phoneSide: optionString empty');
-     optionString = '{}';
-  }
-  var IceWatchOptions = JSON.parse(optionString);
-
-  var url= 'http://archie-perkins.com/pebble/IceWatch/index.html?'+encodeURIComponent(optionString);
-  console.log('phoneSide: url=:'+url+':');
-
-  Pebble.openURL(url); // open the config web page
-  console.log('phoneSide: SetupConfig done');
-  */
 } // SetupConfig
 
 function ProcessConfig(e)
 {
   console.log('phoneSide: ProcessConfig: start');
   console.log('phoneSide: ProcessConfig: response = :'+ e.response + ':');
+
   if(e == undefined || e.response == undefined) {
   	console.log('phoneSide: ProcessConfig: response empty');
 	return;
