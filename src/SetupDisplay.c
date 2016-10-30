@@ -8,6 +8,9 @@
 #include "Layers.h"
 extern Layer Layers[];
 
+const int WHITE=0xffffff;
+const int BLACK=0x000000;
+
 void loadLayers()
 {
 	Layers[ICE_LABEL_LAYER] = (Layer) { 
@@ -16,14 +19,14 @@ void loadLayers()
 	.layer = NULL,
 	.xpos = 0,
 	.ypos = 0,
-	.width = MAX_WIDTH,
+	.width = PBL_DISPLAY_WIDTH,
 	.height = 40,
 	.currentText = "ICE",
 	.defaultText = "ICE",
+	.backgroundColor = WHITE,
+	.textColor = BLACK,
 	.currentImage = NULL,
 	.defaultImage = NULL,
-	.backgroundColor = GColorWhite,
-	.textColor = COLOR_FALLBACK(GColorRed, GColorBlack),
 	.font = FONT_KEY_GOTHIC_28_BOLD,
 	.align = GTextAlignmentCenter
 	};
@@ -34,14 +37,14 @@ void loadLayers()
 	.layer = NULL,
 	.xpos = 0,
 	.ypos = 30,
-	.width = MAX_WIDTH,
+	.width = PBL_DISPLAY_WIDTH,
 	.height = 30,
 	.currentText = "ICE",
 	.defaultText = "Contact Name",
+	.backgroundColor = WHITE,
+	.textColor = BLACK,
 	.currentImage = NULL,
 	.defaultImage = NULL,
-	.backgroundColor = GColorClear,
-	.textColor = GColorBlack,
 	.font = FONT_KEY_ROBOTO_CONDENSED_21,
 	.align = GTextAlignmentCenter
 	};
@@ -52,14 +55,14 @@ void loadLayers()
 	.layer = NULL,
 	.xpos = 0,
 	.ypos = 50,
-	.width = MAX_WIDTH,
+	.width = PBL_DISPLAY_WIDTH,
 	.height = 32,
 	.currentText = "",
 	.defaultText = "000-555-1234",
+	.backgroundColor = WHITE,
+	.textColor = BLACK,
 	.currentImage = NULL,
 	.defaultImage = NULL,
-	.backgroundColor = GColorWhite,
-	.textColor = GColorBlack,
 	.font = FONT_KEY_ROBOTO_CONDENSED_21,
 	.align = GTextAlignmentCenter
 	};
@@ -70,14 +73,14 @@ void loadLayers()
 	.layer = NULL,
 	.xpos = 0,
 	.ypos = 72,
-	.width = MAX_WIDTH,
+	.width = PBL_DISPLAY_WIDTH,
 	.height = 25,
 	.currentText = "",
 	.defaultText = "My Name",
+	.backgroundColor = WHITE,
+	.textColor = BLACK,
 	.currentImage = NULL,
 	.defaultImage = NULL,
-	.backgroundColor = GColorWhite,
-	.textColor = GColorBlack,
 	.font = FONT_KEY_ROBOTO_CONDENSED_21,
 	.align = GTextAlignmentCenter
 	};
@@ -88,14 +91,14 @@ void loadLayers()
 	.layer = NULL,
 	.xpos = 0,
 	.ypos = 85,
-	.width = MAX_WIDTH,
+	.width = PBL_DISPLAY_WIDTH,
 	.height = 45,
 	.currentText = "",
 	.defaultText = "00:00",
+	.backgroundColor = WHITE,
+	.textColor = BLACK,
 	.currentImage = NULL,
 	.defaultImage = NULL,
-	.backgroundColor = GColorClear,
-	.textColor = GColorBlack,
 	.font = FONT_KEY_BITHAM_42_BOLD,
 	.align = GTextAlignmentCenter
 	};
@@ -106,14 +109,14 @@ void loadLayers()
 	.layer = NULL,
 	.xpos = 0,
 	.ypos = 125,
-	.width = MAX_WIDTH,
+	.width = PBL_DISPLAY_WIDTH,
 	.height = 50,
 	.currentText = "",
 	.defaultText = "Tues. 31 September\n 2015",
+	.backgroundColor = WHITE,
+	.textColor = BLACK,
 	.currentImage = NULL,
 	.defaultImage = NULL,
-	.backgroundColor = GColorClear,
-	.textColor = GColorBlack,
 	.font = FONT_KEY_GOTHIC_18_BOLD,
 	.align = GTextAlignmentCenter
 	};
@@ -128,9 +131,10 @@ void loadLayers()
 	.height = 25,
 	.currentText = "",
 	.defaultText = "100%",
+	.backgroundColor = WHITE,
+	.textColor = BLACK,
 	.currentImage = NULL,
 	.defaultImage = NULL,
-	.textColor = COLOR_FALLBACK(GColorBlue, GColorBlack),
 	.font = FONT_KEY_GOTHIC_24,
 	.align = GTextAlignmentCenter
 	};
@@ -145,10 +149,10 @@ void loadLayers()
 	.height = 32,
 	.currentText = "",
 	.defaultText = "",
+	.backgroundColor = WHITE,
+	.textColor = BLACK,
 	.currentImage = gbitmap_create_with_resource(RESOURCE_ID_bluetoothOn),
 	.defaultImage = gbitmap_create_with_resource(RESOURCE_ID_bluetoothOn),
-	.backgroundColor = GColorWhite,
-	.textColor = COLOR_FALLBACK(GColorBlue, GColorBlack),
 	.font = FONT_KEY_GOTHIC_24,
 	.align = GTextAlignmentCenter
 	};
@@ -177,27 +181,36 @@ TextLayer * makeTextLayer( Window * win
                            ,GTextAlignment alignment
 			   ,char * initialText)
 {
-  APP_LOG(DebugLevel, "ICEWatch makeTextLayer: START");
+  //APP_LOG(DebugLevel, "ICEWatch makeTextLayer: START");
+  APP_LOG(DebugLevel, "ICEWatch makeTextLayer: backgroundColor=:%#06x: textColor=:%#06x:",
+  	(int) backgroundColor.argb,
+	(int) textColor.argb);
   TextLayer *newLayer = text_layer_create(GRect(x, y, width, height));
   text_layer_set_background_color(newLayer, backgroundColor);
-  text_layer_set_text_color(newLayer, textColor);
   text_layer_set_font(newLayer, fonts_get_system_font(font));
-  layer_add_child(window_get_root_layer(win), text_layer_get_layer(newLayer));
+  text_layer_set_text_color(newLayer, textColor);
   text_layer_set_text_alignment(newLayer, alignment);
   text_layer_set_text(newLayer, initialText);
+  layer_add_child(window_get_root_layer(win), text_layer_get_layer(newLayer));
   return(newLayer);
 } // makeTextLayer
 
 void processLayers()
 {
+  GColor bColor;
+  GColor tColor;
   APP_LOG(DebugLevel, "ICEWatch processLayers: START");
    for (int layer = 0; layer< LAYERCOUNT; ++layer) {
       APP_LOG(DebugLevel, "ICEWatch working on layer (%d) type=%s",layer,Layers[layer].type);
       if(strcmp(Layers[layer].type , "text") == 0) {
          APP_LOG(DebugLevel, "ICEWatch making textLayer (%d)",layer);
+         APP_LOG(DebugLevel, "ICEWatch processLayers: layer (%d) backgroundColor=:%#06x: textColor=:%#06x:",layer, (int) Layers[layer].backgroundColor,(int) Layers[layer].textColor);
+  	 bColor = GColorFromHEX( Layers[layer].backgroundColor);
+  	 tColor = GColorFromHEX( Layers[layer].textColor);
+
          Layers[layer].layer =  makeTextLayer(mainWindow
                 ,Layers[layer].xpos, Layers[layer].ypos, Layers[layer].width, Layers[layer].height,
-  		Layers[layer].backgroundColor,Layers[layer].textColor,
+  		bColor,tColor,
 		Layers[layer].font, Layers[layer].align, Layers[layer].defaultText
          );
       }
@@ -223,17 +236,17 @@ void setDisplayData()
    setBackgroundColor(CONFIG_DATA.iceBackgroundColor,GET_LAYER(ICE_PHONE_LAYER));
    setBackgroundColor(CONFIG_DATA.meBackgroundColor,GET_LAYER(ME_NAME_LAYER));
 
-  	text_layer_set_text(GET_LAYER(ME_NAME_LAYER), CONFIG_DATA.myName);
-  	text_layer_set_text(GET_LAYER(ICE_NAME_LAYER), CONFIG_DATA.iceName);
-  	text_layer_set_text(GET_LAYER(ICE_PHONE_LAYER), CONFIG_DATA.icePhone);
+   text_layer_set_text(GET_LAYER(ME_NAME_LAYER), CONFIG_DATA.myName);
+   text_layer_set_text(GET_LAYER(ICE_NAME_LAYER), CONFIG_DATA.iceName);
+   text_layer_set_text(GET_LAYER(ICE_PHONE_LAYER), CONFIG_DATA.icePhone);
 
-   APP_LOG(DebugLevel, "ICEWatch setDislayData: showBattery=:%d:",CONFIG_DATA.showBattery);
+   APP_LOG(DebugLevel, "ICEWatch setDisplayData: showBattery=:%d:",CONFIG_DATA.showBattery);
    if(CONFIG_DATA.showBattery)
 	   BatteryStatusOn();
    else
 	   BatteryStatusOff();
 
-   APP_LOG(DebugLevel, "ICEWatch setDislayData: showBT=:%d:",CONFIG_DATA.showBT);
+   APP_LOG(DebugLevel, "ICEWatch setDisplayData: showBT=:%d:",CONFIG_DATA.showBT);
    if(CONFIG_DATA.showBT)
       bluetoothHandler(bluetooth_connection_service_peek());
    else

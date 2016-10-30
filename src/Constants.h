@@ -1,7 +1,6 @@
 #define BT_STATUS 42
 
 #define BUZZER_INTERVAL 1500
-#define MAX_WIDTH 144
 #define LAYERCOUNT 8
 
 #define ICE_LABEL_LAYER 0

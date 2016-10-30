@@ -8,8 +8,8 @@ typedef struct Layer {
 	int height;
 	char * currentText;
 	char * defaultText;
-	GColor backgroundColor;
-	GColor textColor;
+	int backgroundColor;
+	int textColor;
 	GBitmap * currentImage;
 	GBitmap * defaultImage;
 	char * font;
