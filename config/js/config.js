@@ -9,7 +9,7 @@ function clearLog()
 
 function logger(str)
 {
-  console.log(str);
+  console.log('Config.js: ' + str);
 } // logger
 
 function init()
@@ -59,12 +59,9 @@ function setupOptions()
      $('#iceTextColor').val(decToHexString(ConfigData['KEY_ICE_TEXTCOLOR']));
      $('#meTextColor').val(decToHexString(ConfigData['KEY_ME_TEXTCOLOR']));
    }
-   else
+   else {
      $('#colorPicker').hide();
    }
-
-
-  $('.item-color').change();
 } // setupOptions
 
 function makeOptionString()
